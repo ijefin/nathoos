@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import TornEdge from './TornEdge.astro';
+import logo from '../assets/media/brand/logo.png';
+import { contact, whatsappLink } from '../data/site';
+---
+
+<footer class="footer on-ink grain torn" aria-labelledby="footer-titulo">
+  <TornEdge seed={53} />
+  <div class="frame grid-12 footer-top">
+    <div class="footer-invite">
+      <h2 id="footer-titulo" class="footer-title">Me conta<br />sua ideia</h2>
+      <a class="button" href="#orcamento" data-magnetic>Solicitar orçamento</a>
+    </div>
+    <div class="footer-side">
+      <Image src={logo} alt="Logo Nathan Augusto, tatuador" width={120} class="footer-logo" loading="lazy" />
+      <ul class="footer-links" role="list">
+        <li><a class="link" href={whatsappLink()} target="_blank" rel="noopener">WhatsApp</a></li>
+        {contact.instagram && (
+          <li><a class="link" href={`https://instagram.com/${contact.instagram}`} target="_blank" rel="noopener">Instagram</a></li>
+        )}
+        {contact.address && (
+          <li>
+            <a class="link" href={contact.mapsUrl || `https://maps.google.com/?q=${encodeURIComponent(contact.address)}`} target="_blank" rel="noopener">
+              {contact.address}
+            </a>
+          </li>
+        )}
+      </ul>
+    </div>
+  </div>
+
+  <div class="frame footer-legal small">
+    <p>© {new Date().getFullYear()} Nathan Augusto Tattoo</p>
+    <p>Fotos e vídeos do estúdio</p>
+  </div>
+  <p class="footer-mark display stencil" aria-hidden="true">Nathan Augusto</p>
+</footer>
+
+<style>
+  .footer { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto; overflow: clip; color: var(--color-paper); }
+  .footer > :global(.torn-edge) { color: var(--color-ink); }
+  .footer-top { padding-top: clamp(96px, 10vw, 160px); align-items: start; }
+  .footer-invite { grid-column: 1 / 8; display: grid; gap: 32px; justify-items: start; }
+  .footer-title { font-size: var(--step-title); line-height: 0.95; letter-spacing: -0.02em; }
+  .footer-side { grid-column: 10 / 13; display: grid; gap: 24px; justify-items: start; }
+  :global(.footer-logo) { width: 120px; height: auto; }
+  .footer-links { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+
+  .footer-legal { grid-row: 2; margin-top: clamp(96px, 10vw, 180px); display: flex; justify-content: space-between; gap: 16px; padding-bottom: 8px; color: var(--color-wash-light); position: relative; z-index: 1; }
+  .footer-mark {
+    grid-row: 3;
+    margin: 0;
+    padding-left: var(--margin);
+    font-size: 21vw;
+    line-height: 0.8;
+    white-space: nowrap;
+    transform: translateY(24%);
+    margin-top: -0.12em;
+  }
+
+  @media (max-width: 820px) {
+    .footer-invite,
+    .footer-side { grid-column: 1 / -1; }
+    .footer-side { margin-top: 48px; }
+    .footer-invite :global(.button) { width: 100%; justify-content: center; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+    .footer-mark { font-size: 30vw; }
+  }
+</style>

@@ -1,0 +1,140 @@
+---
+import { Picture } from 'astro:assets';
+import TornEdge from './TornEdge.astro';
+import { steps } from '../data/site';
+import { asset } from '../lib/url';
+---
+
+<section class="process grain torn" id="processo" aria-labelledby="processo-titulo">
+  <TornEdge seed={11} />
+  <div class="frame process-intro">
+    <h2 id="processo-titulo" class="head" data-split>Meu processo</h2>
+    <p class="lead" data-rise>Da primeira mensagem aos cuidados depois da sessão, em cinco passos.</p>
+  </div>
+
+  <ol class="process-steps" role="list">
+    {
+      steps.map((step, i) => {
+        const last = i === steps.length - 1;
+        return (
+          <li class:list={['step', i % 2 ? 'step--right' : 'step--left']} data-step>
+            <div class="step-media">
+              {step.image && (
+                <Picture
+                  src={step.image}
+                  formats={['avif', 'webp']}
+                  widths={[480, 720, 960]}
+                  sizes="(max-width: 820px) 100vw, 50vw"
+                  alt={step.alt}
+                  loading="lazy"
+                />
+              )}
+              {step.video && (
+                <video
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  poster={asset(`media/${step.video}.jpg`)}
+                  width="478"
+                  height="850"
+                  aria-label={step.alt}
+                  data-inview-play
+                >
+                  <source src={asset(`media/${step.video}.webm`)} type="video/webm" />
+                  <source src={asset(`media/${step.video}.mp4`)} type="video/mp4" />
+                </video>
+              )}
+            </div>
+            <div class="step-text">
+              <h3 class="step-verb display" data-verb={last ? 'ink' : 'stencil'}>
+                <span class="stencil">{step.verb}</span>
+                {last && <span class="step-ink" aria-hidden="true">{step.verb}</span>}
+              </h3>
+              <p class="step-line">{step.text}</p>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+</section>
+
+<style>
+  .process { background: var(--color-paper); color: var(--color-ink); }
+  .process > :global(.torn-edge) { color: var(--color-paper); }
+  .process-intro {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 20px;
+    align-items: end;
+    padding-block: clamp(96px, 10vw, 180px) clamp(48px, 6vw, 96px);
+  }
+  .process-intro h2 { grid-column: 1 / 7; }
+  .process-intro p { grid-column: 8 / 12; max-width: 30ch; }
+
+  .process-steps { margin: 0; padding: 0; list-style: none; }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 135svh;
+    background: var(--color-paper);
+  }
+  .step--right .step-media { order: 2; }
+
+  /* A foto e o verbo seguram juntos por um terço de tela antes do próximo passo. */
+  .step-media {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: clip;
+    background: var(--color-paper-2);
+  }
+  .step-media :global(img),
+  .step-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  .step-text {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: grid;
+    align-content: center;
+    gap: clamp(20px, 2.4vw, 36px);
+    padding: 0 var(--margin);
+  }
+
+  .step-verb {
+    position: relative;
+    font-size: var(--step-display);
+    line-height: 0.9;
+    white-space: nowrap;
+  }
+  .step-ink {
+    position: absolute;
+    inset: 0;
+    color: var(--color-ink);
+    -webkit-text-stroke: clamp(1.5px, 0.16vw, 2.5px) var(--color-ink);
+    clip-path: inset(0 0 0 0);
+  }
+  :global(.js) .step-ink { clip-path: inset(0 100% 0 0); }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .step-ink { clip-path: inset(0 0 0 0); }
+  }
+
+  .step-line { max-width: 34ch; }
+
+  @media (max-width: 600px) {
+    .process-intro h2,
+    .process-intro p { grid-column: 1 / -1; }
+  }
+  @media (max-width: 820px) {
+    .step { grid-template-columns: 1fr; min-height: auto; }
+    .step--right .step-media { order: 0; }
+    .step-media { position: relative; height: 64svh; }
+    .step-text { position: relative; height: auto; padding-block: 24px 72px; gap: 16px; }
+    .step-verb { font-size: 13vw; }
+  }
+</style>

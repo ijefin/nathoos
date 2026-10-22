@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+_raw/
+*.zip
+.taste-skill/inspect/
+*.pdf
+.taste-skill/history.json

@@ -1,0 +1,232 @@
+---
+import TornEdge from './TornEdge.astro';
+import { whatsappLink } from '../data/site';
+
+const places = ['Antebraço', 'Braço', 'Ombro', 'Costas', 'Peito', 'Costela', 'Coxa', 'Panturrilha', 'Mão', 'Pescoço', 'Outro'];
+const fallbackText = 'Oi, Nathan! Quero fazer um orçamento.';
+---
+
+<section class="quote grain torn" id="orcamento" aria-labelledby="orcamento-titulo">
+  <TornEdge seed={27} />
+  <div class="frame quote-intro">
+    <h2 id="orcamento-titulo" class="head" data-split>Orçamento</h2>
+    <p class="lead" data-rise>
+      Monte seu pedido aqui e ele vai pronto para o meu WhatsApp. Valor e número de sessões dependem da avaliação do
+      projeto.
+    </p>
+  </div>
+
+  <div class="frame quote-grid">
+    <form class="quote-form" data-quote novalidate>
+      <label class="field">
+        <span class="field-label">Seu nome</span>
+        <input type="text" name="nome" autocomplete="given-name" placeholder="Como posso te chamar?" />
+      </label>
+
+      <fieldset class="field">
+        <legend class="field-label">Estilo</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="estilo" value="Preto e cinza" checked /><span>Preto e cinza</span></label>
+          <label class="choice"><input type="radio" name="estilo" value="Blackwork" /><span>Blackwork</span></label>
+          <label class="choice"><input type="radio" name="estilo" value="Cobertura ou reforma" /><span>Cobertura ou reforma</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field-label">Local do corpo</legend>
+        <div class="choices">
+          {
+            places.map((p, i) => (
+              <label class="choice">
+                <input type="radio" name="local" value={p} checked={i === 0} />
+                <span>{p}</span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label class="field-label" for="tamanho">
+          Tamanho aproximado: <output id="tamanho-valor" class="size-value" for="tamanho" data-size-out>12&nbsp;cm</output>
+        </label>
+        <input id="tamanho" class="size" type="range" name="tamanho" min="3" max="40" step="1" value="12" aria-describedby="tamanho-valor" />
+        <label class="check">
+          <input type="checkbox" name="fechamento" />
+          <span>É um fechamento (braço, perna ou costas inteiras)</span>
+        </label>
+      </div>
+
+      <label class="field">
+        <span class="field-label">Sua ideia</span>
+        <textarea name="ideia" rows="4" placeholder="O que você quer tatuar e o que isso significa pra você?"></textarea>
+      </label>
+
+      <div class="field">
+        <label class="field-label" for="refs">Referências</label>
+        <input id="refs" class="file" type="file" name="refs" accept="image/*" multiple aria-describedby="refs-ajuda" />
+        <p id="refs-ajuda" class="small field-help">
+          As fotos ficam só no seu aparelho. Você manda pelo WhatsApp logo depois; se for cobertura, inclua uma foto da
+          tatuagem atual.
+        </p>
+      </div>
+
+      <fieldset class="field">
+        <legend class="field-label">Avaliação</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="caminho" value="online" checked /><span>Online, por fotos</span></label>
+          <label class="choice"><input type="radio" name="caminho" value="presencial" /><span>Presencial, no estúdio</span></label>
+        </div>
+        <p class="small field-help" data-path-help>
+          Coberturas, reformas e casos que pedem olhar a pele de perto são avaliados presencialmente.
+        </p>
+      </fieldset>
+    </form>
+
+    <aside class="quote-note-wrap" aria-label="Prévia da mensagem">
+      <div class="quote-note" data-note data-rise>
+        <p class="note-text" data-note-text aria-live="polite">{fallbackText}</p>
+        <ul class="note-refs" data-note-refs role="list"></ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<a class="send on-ink" href={whatsappLink(fallbackText)} target="_blank" rel="noopener" data-send aria-describedby="send-desc">
+  <span id="send-desc" class="send-desc" data-send-desc>Abre o WhatsApp com a sua mensagem pronta. As fotos você manda na conversa.</span>
+  <svg class="send-arrow" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 36 36 12M16 12h20v20" fill="none" stroke="currentColor" stroke-width="4" /></svg>
+  <span class="send-word">Enviar</span>
+</a>
+
+<style>
+  .quote { background: var(--color-paper); color: var(--color-ink); padding-bottom: clamp(96px, 10vw, 180px); }
+  .quote > :global(.torn-edge) { color: var(--color-paper); }
+  .quote-intro {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 20px;
+    align-items: end;
+    padding-block: clamp(96px, 10vw, 180px) clamp(48px, 5vw, 80px);
+  }
+  .quote-intro h2 { grid-column: 1 / 7; }
+  .quote-intro p { grid-column: 8 / 12; max-width: 34ch; }
+
+  .quote-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
+  .quote-form { grid-column: 1 / 7; display: grid; gap: 40px; }
+  .quote-note-wrap { grid-column: 8 / 13; position: sticky; top: 96px; }
+
+  .field { display: grid; gap: 14px; border: 0; margin: 0; padding: 0; min-width: 0; }
+  .field-label { font-weight: 700; padding: 0; }
+  .field-help { color: var(--color-wash); max-width: 52ch; }
+
+  input[type='text'],
+  textarea {
+    font: inherit;
+    font-size: var(--step-body);
+    color: var(--color-ink);
+    background: var(--color-paper-2);
+    border: 0;
+    border-bottom: 2px solid var(--color-ink);
+    border-radius: 0;
+    padding: 14px 16px;
+    width: 100%;
+    resize: vertical;
+  }
+  input::placeholder,
+  textarea::placeholder { color: var(--color-wash); }
+
+  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice { position: relative; }
+  .choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .choice span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    background: var(--color-paper-2);
+    transition: background-color var(--t-hover) ease, color var(--t-hover) ease;
+  }
+  .choice input:checked + span { background: var(--color-ink); color: var(--color-paper); }
+  .choice input:focus-visible + span { outline: 3px solid var(--color-stencil); outline-offset: 2px; }
+  @media (hover: hover) and (pointer: fine) {
+    .choice input:not(:checked):hover + span { background: #d2d2cb; }
+  }
+
+  .size { width: 100%; accent-color: var(--color-stencil); height: 32px; }
+  .size-value { font-variant-numeric: tabular-nums; }
+  .check { display: flex; gap: 10px; align-items: center; }
+  .check input { width: 20px; height: 20px; accent-color: var(--color-ink); }
+
+  .file { font: inherit; font-size: var(--step-small); }
+  .file::file-selector-button {
+    font: inherit;
+    font-weight: 700;
+    margin-right: 14px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 0;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    cursor: pointer;
+  }
+
+  /* O bilhete: papel rasgado, como nos posts dele. */
+  .quote-note {
+    position: relative;
+    background: #fafafa;
+    padding: 40px 32px 44px;
+    transform: rotate(-1.2deg);
+    clip-path: polygon(0 3%, 6% 0, 14% 2%, 23% 0, 31% 1.5%, 42% 0, 50% 2%, 61% 0.5%, 70% 2.5%, 79% 0, 88% 1.8%, 96% 0, 100% 2%, 100% 97%, 94% 100%, 85% 98%, 76% 100%, 66% 98.5%, 55% 100%, 46% 98%, 35% 100%, 25% 98.4%, 15% 100%, 7% 98%, 0 99%);
+  }
+  .note-text {
+    white-space: pre-line;
+    font-size: var(--step-lead);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .note-refs { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 0; padding: 0; list-style: none; }
+  .note-refs :global(li) { background: #fff; padding: 6px 6px 18px; transform: rotate(var(--r, 0deg)); }
+  .note-refs :global(img) { width: 84px; height: 84px; object-fit: cover; }
+
+  .send {
+    position: relative;
+    display: block;
+    height: 60svh;
+    min-height: 360px;
+    background: var(--color-accent);
+    color: var(--color-ink);
+    text-decoration: none;
+    overflow: clip;
+    transition: background-color 0s, color 0s;
+  }
+  .send:hover,
+  .send:focus-visible { background: var(--color-ink); color: var(--color-accent); outline: none; }
+  .send-desc { position: absolute; top: 28px; left: var(--margin); max-width: 30ch; font-size: var(--step-lead); line-height: 1.35; }
+  .send-arrow { position: absolute; top: 24px; right: var(--margin); width: 48px; height: 48px; }
+  .send-word {
+    position: absolute;
+    left: var(--margin);
+    right: var(--margin);
+    bottom: 24px;
+    font-weight: 900;
+    font-stretch: 100%;
+    text-transform: uppercase;
+    font-size: 21vw;
+    line-height: 0.74;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 820px) {
+    .quote-intro h2,
+    .quote-intro p,
+    .quote-form,
+    .quote-note-wrap { grid-column: 1 / -1; }
+    .quote-note-wrap { position: relative; top: auto; margin-top: 48px; }
+    .send { height: 46svh; min-height: 300px; }
+    .send-desc { font-size: var(--step-body); max-width: 30ch; right: 72px; }
+    .send-arrow { width: 32px; height: 32px; }
+
+  }
+</style>

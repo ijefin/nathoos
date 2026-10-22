@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+import { contact } from '../data/site';
+import { asset } from '../lib/url';
+import fontUrl from '../assets/fonts/tiktok-sans.woff2?url';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TattooParlor',
+  name: 'Nathan Augusto Tattoo',
+  description,
+  url: canonical.href,
+  ...(contact.address && { address: contact.address }),
+  ...(contact.instagram && { sameAs: [`https://instagram.com/${contact.instagram}`] }),
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content={new URL(asset('media/tinta.jpg'), Astro.site)} />
+    <link rel="icon" href={asset('favicon.png')} type="image/png" />
+    <link rel="preload" href={fontUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={asset('media/tinta.jpg')} as="image" fetchpriority="high" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

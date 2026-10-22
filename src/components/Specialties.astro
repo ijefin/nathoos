@@ -1,0 +1,69 @@
+---
+import { Picture } from 'astro:assets';
+import TornEdge from './TornEdge.astro';
+import sessao from '../assets/media/intro/sessao.jpg';
+import { styles } from '../data/site';
+---
+
+<section class="specialties on-ink grain torn" id="especialidades" aria-labelledby="especialidades-titulo">
+  <TornEdge seed={3} />
+  <div class="frame grid-12 specialties-grid">
+    <h2 id="especialidades-titulo" class="head specialties-title" data-split>Preto e cinza,<br /> blackwork e coberturas</h2>
+
+    <figure class="specialties-media" data-rise>
+      <Picture
+        src={sessao}
+        formats={['avif', 'webp']}
+        widths={[640, 960, 1280]}
+        sizes="(max-width: 820px) 100vw, 58vw"
+        alt="Nathan, de máscara e luvas, tatuando a coxa de um cliente sob luz baixa"
+      />
+    </figure>
+
+    <p class="specialties-statement lead" data-fill>
+      Faço da tatuagem delicada até a mais complexa. Sou especializado em preto e cinza, principalmente animais,
+      rostos e coberturas, com muita arte no freehand.
+    </p>
+
+    <ul class="specialties-styles" role="list" data-rise>
+      {styles.map((style) => (
+        <li>
+          <a class="link" href={`#trabalhos`} data-filter-link={style}>
+            {style === 'Cobertura' ? 'Coberturas' : style}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .specialties { color: var(--color-paper); padding-block: clamp(96px, 12vw, 200px); }
+  .specialties > :global(.torn-edge) { color: var(--color-ink); }
+  .specialties-grid { row-gap: 40px; align-items: start; grid-template-rows: auto auto 1fr; }
+  .specialties-title { grid-column: 1 / -1; grid-row: 1; }
+  .specialties-media { grid-column: 6 / 13; grid-row: 2 / 4; margin: 0; aspect-ratio: 16 / 9; overflow: clip; }
+  .specialties-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .specialties-statement { grid-column: 1 / 5; grid-row: 2; max-width: 30ch; }
+  .specialties-styles {
+    grid-column: 1 / 6;
+    grid-row: 3;
+    align-self: end;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--step-lead);
+  }
+
+  @media (max-width: 820px) {
+    .specialties-title,
+    .specialties-statement,
+    .specialties-styles { grid-column: 1 / -1; grid-row: auto; }
+    .specialties-media { grid-column: 1 / -1; grid-row: auto; margin: 0 calc(-1 * var(--margin)); }
+    .specialties-title { font-size: clamp(1.625rem, 6.6vw, 2.75rem); }
+  }
+</style>

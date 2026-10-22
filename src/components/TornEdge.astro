@@ -1,0 +1,30 @@
+---
+/**
+ * Borda de papel rasgado. Fica no topo de uma seção `.torn` e herda a cor de fundo dela
+ * via `fill="currentColor"` (defina `color` com a cor do fundo da seção).
+ */
+interface Props {
+  seed?: number;
+}
+const { seed = 7 } = Astro.props;
+
+// Gerador determinístico para o rasgo ser igual em todo build.
+let s = seed * 9301 + 49297;
+const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+
+const W = 1440;
+const H = 30;
+const pts: string[] = [`0,${H}`];
+let x = 0;
+while (x < W) {
+  x = Math.min(W, x + 6 + rand() * 22);
+  const big = rand() > 0.86;
+  const y = big ? 2 + rand() * 8 : 12 + rand() * 14;
+  pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+}
+pts.push(`${W},${H}`);
+---
+
+<svg class="torn-edge" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+  <polygon points={pts.join(' ')} fill="currentColor"></polygon>
+</svg>
