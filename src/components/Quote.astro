@@ -84,17 +84,25 @@ const fallbackText = 'Oi, Nathan! Quero fazer um orçamento.';
     </form>
 
     <aside class="quote-note-wrap" aria-label="Prévia da mensagem">
-      <div class="quote-note" data-note data-rise>
+      <div class="quote-note" data-note>
         <p class="note-text" data-note-text aria-live="polite">{fallbackText}</p>
         <ul class="note-refs" data-note-refs role="list"></ul>
       </div>
+      <p class="send-status" data-send-status aria-live="polite">Falta: seu nome e sua ideia.</p>
+      <a class="button send-now" href={whatsappLink(fallbackText)} target="_blank" rel="noopener" data-send>
+        Enviar pelo WhatsApp
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.5" /></svg>
+      </a>
     </aside>
   </div>
 </section>
 
 <a class="send on-ink" href={whatsappLink(fallbackText)} target="_blank" rel="noopener" data-send aria-describedby="send-desc">
   <span id="send-desc" class="send-desc" data-send-desc>Abre o WhatsApp com a sua mensagem pronta. As fotos você manda na conversa.</span>
-  <svg class="send-arrow" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 36 36 12M16 12h20v20" fill="none" stroke="currentColor" stroke-width="4" /></svg>
+  <span class="send-chip" aria-hidden="true">
+    Abrir WhatsApp
+    <svg viewBox="0 0 24 24"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.5" /></svg>
+  </span>
   <span class="send-word">Enviar</span>
 </a>
 
@@ -203,7 +211,37 @@ const fallbackText = 'Oi, Nathan! Quero fazer um orçamento.';
   .send:hover,
   .send:focus-visible { background: var(--color-ink); color: var(--color-accent); outline: none; }
   .send-desc { position: absolute; top: 28px; left: var(--margin); max-width: 30ch; font-size: var(--step-lead); line-height: 1.35; }
-  .send-arrow { position: absolute; top: 24px; right: var(--margin); width: 48px; height: 48px; }
+  /* O canto da faixa tem cara de botão: bloco cheio, texto e seta. */
+  .send-chip {
+    position: absolute;
+    top: 20px;
+    right: var(--margin);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    padding: 0 24px;
+    background: var(--color-ink);
+    color: var(--color-accent);
+    font-size: var(--step-lead);
+    font-weight: 700;
+    transition: transform var(--t-press) var(--ease-out);
+  }
+  .send-chip svg { width: 28px; height: 28px; }
+  .send:hover .send-chip,
+  .send:focus-visible .send-chip { background: var(--color-accent); color: var(--color-ink); }
+  .send:active .send-chip { transform: scale(0.97); }
+
+  .send-status { margin-top: 28px; font-weight: 600; }
+  .send-status.is-ready { color: var(--color-stencil); }
+  .send-now {
+    width: 100%;
+    justify-content: space-between;
+    min-height: 64px;
+    margin-top: 12px;
+    font-size: var(--step-lead);
+  }
+  .send-now svg { width: 26px; height: 26px; }
   .send-word {
     position: absolute;
     left: var(--margin);
@@ -224,9 +262,11 @@ const fallbackText = 'Oi, Nathan! Quero fazer um orçamento.';
     .quote-form,
     .quote-note-wrap { grid-column: 1 / -1; }
     .quote-note-wrap { position: relative; top: auto; margin-top: 48px; }
-    .send { height: 46svh; min-height: 300px; }
-    .send-desc { font-size: var(--step-body); max-width: 30ch; right: 72px; }
-    .send-arrow { width: 32px; height: 32px; }
+    /* No celular a faixa vira coluna: frase, a palavra, e o botão embaixo dela. */
+    .send { display: flex; flex-direction: column; height: auto; min-height: 0; padding-bottom: 28px; }
+    .send-word { position: static; order: 2; margin: 40px var(--margin) 0; }
+    .send-chip { position: static; order: 3; align-self: flex-start; margin: 24px var(--margin) 0; min-height: 56px; font-size: var(--step-body); }
+    .send-desc { position: static; display: block; max-width: 30ch; padding: 24px var(--margin) 0; font-size: var(--step-body); }
 
   }
 </style>

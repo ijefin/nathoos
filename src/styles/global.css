@@ -154,17 +154,20 @@
   }
   .button:active { transform: scale(0.97); }
 
+  /* Sublinhado sempre visível, no roxo do stencil: todo link se reconhece como link. */
   .link {
     text-decoration: underline;
-    text-decoration-thickness: 0.07em;
-    text-underline-offset: 0.22em;
-    text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+    text-decoration-thickness: max(2px, 0.08em);
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-stencil);
     transition: text-decoration-color var(--t-hover) ease, color var(--t-hover) ease;
   }
+  .on-ink .link { text-decoration-color: var(--color-stencil-light); }
 
   @media (hover: hover) and (pointer: fine) {
     .button:hover { background: var(--color-accent-strong); }
-    .link:hover { text-decoration-color: currentColor; }
+    .link:hover { color: var(--color-stencil); text-decoration-color: currentColor; }
+    .on-ink .link:hover { color: var(--color-stencil-light); }
   }
 
   /* Borda de papel rasgado no topo de uma seção (vem dos posts dele). */

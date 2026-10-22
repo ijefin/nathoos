@@ -43,6 +43,23 @@ if (bar && hero) {
   });
 }
 
+// ---------- Celular: botão de orçamento fixo depois do hero, fora do caminho no orçamento e no rodapé ----------
+const floatCta = document.querySelector<HTMLElement>('[data-float-cta]');
+if (floatCta && hero) {
+  const away = new Set<Element>();
+  let past = false;
+  const sync = () => floatCta.classList.toggle('is-on', past && away.size === 0);
+  new IntersectionObserver(([e]) => {
+    past = !e.isIntersecting;
+    sync();
+  }).observe(hero);
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) e.isIntersecting ? away.add(e.target) : away.delete(e.target);
+    sync();
+  });
+  document.querySelectorAll('#orcamento, .send, footer').forEach((el) => io.observe(el));
+}
+
 // ---------- Vídeos: tocam só quando visíveis, param com a aba escondida ----------
 const videos = document.querySelectorAll<HTMLVideoElement>('[data-inview-play], [data-autoplay]');
 const videoIO = new IntersectionObserver(
@@ -107,6 +124,29 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         stagger: 0.1,
         scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 55%', scrub: true },
       },
+    );
+  });
+
+  // Cards do "Quem tatua": os respingos caem no papel quando o card entra...
+  document.querySelectorAll<HTMLElement>('[data-splat]').forEach((wrap) => {
+    gsap.from(wrap.querySelectorAll('.ink-splat'), {
+      scale: 0.2,
+      rotate: -25,
+      opacity: 0,
+      transformOrigin: '50% 50%',
+      duration: 0.7,
+      ease: 'expo.out',
+      stagger: 0.12,
+      scrollTrigger: { trigger: wrap, start: 'top 85%', once: true },
+    });
+  });
+  // ...e o texto dele se enche de tinta enquanto é lido (começa legível, em 60%).
+  document.querySelectorAll<HTMLElement>('[data-fill-card]').forEach((el) => {
+    const split = SplitText.create(el, { type: 'words', aria: 'none' });
+    gsap.fromTo(
+      split.words,
+      { opacity: 0.6 },
+      { opacity: 1, ease: 'none', stagger: 0.1, scrollTrigger: { trigger: el, start: 'top 90%', end: 'bottom 72%', scrub: true } },
     );
   });
 

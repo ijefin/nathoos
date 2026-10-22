@@ -4,10 +4,11 @@ export function initQuote() {
   const form = document.querySelector<HTMLFormElement>('[data-quote]');
   const noteText = document.querySelector<HTMLElement>('[data-note-text]');
   const noteRefs = document.querySelector<HTMLUListElement>('[data-note-refs]');
-  const send = document.querySelector<HTMLAnchorElement>('[data-send]');
+  const sends = document.querySelectorAll<HTMLAnchorElement>('[data-send]');
+  const status = document.querySelector<HTMLElement>('[data-send-status]');
   const sendDesc = document.querySelector<HTMLElement>('[data-send-desc]');
   const sizeOut = document.querySelector<HTMLOutputElement>('[data-size-out]');
-  if (!form || !noteText || !noteRefs || !send || !sendDesc || !sizeOut) return;
+  if (!form || !noteText || !noteRefs || !sends.length || !sendDesc || !sizeOut) return;
 
   let refCount = 0;
   const urls: string[] = [];
@@ -41,7 +42,14 @@ export function initQuote() {
     const text = lines.join('\n');
 
     noteText.textContent = text;
-    send.href = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(text)}`;
+    sends.forEach((a) => (a.href = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(text)}`));
+
+    // Diz o que falta; a mensagem pode ir assim mesmo, mas fica claro quando está completa.
+    if (status) {
+      const missing = [!nome && 'seu nome', !ideia && 'sua ideia'].filter(Boolean);
+      status.textContent = missing.length ? `Falta: ${missing.join(' e ')}.` : 'Tudo pronto. É só enviar.';
+      status.classList.toggle('is-ready', !missing.length);
+    }
     sendDesc.textContent = presencial
       ? 'Abre o WhatsApp pedindo um horário de avaliação. As fotos você manda na conversa.'
       : 'Abre o WhatsApp com a sua mensagem pronta. As fotos você manda na conversa.';

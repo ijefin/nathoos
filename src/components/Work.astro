@@ -10,41 +10,23 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
 <section class="work on-ink grain torn" id="trabalhos" aria-labelledby="trabalhos-titulo">
   <TornEdge seed={19} />
 
-  <div class="frame work-filters" role="group" aria-label="Filtrar por estilo">
-    <button type="button" class="work-filter" aria-pressed="true" data-filter="*">Todos</button>
-    {
-      styles.map((style) => (
-        <button type="button" class="work-filter" aria-pressed="false" data-filter={style}>
-          {style === 'Cobertura' ? 'Coberturas' : style}
-        </button>
-      ))
-    }
+  <div class="frame work-head">
+    <h2 id="trabalhos-titulo" class="head" data-split>Trabalhos</h2>
+    <p class="lead work-hint">Escolha um trabalho para ver a foto em detalhe.</p>
+    <div class="work-filters" role="group" aria-label="Filtrar por estilo">
+      <button type="button" class="work-filter" aria-pressed="true" data-filter="*">Todos</button>
+      {
+        styles.map((style) => (
+          <button type="button" class="work-filter" aria-pressed="false" data-filter={style}>
+            {style === 'Cobertura' ? 'Coberturas' : style}
+          </button>
+        ))
+      }
+    </div>
   </div>
 
-  <div class="work-stage">
-    <div class="work-hold" aria-hidden="true">
-      <div class="work-frame" data-work-frame>
-        {
-          works.map((w, i) => (
-            <Picture
-              src={w.image}
-              formats={['avif', 'webp']}
-              widths={[320, 480, 640]}
-              sizes="(max-width: 820px) 60vw, 31vw"
-              alt=""
-              loading="lazy"
-              class:list={['work-shot', i === 0 && 'is-current']}
-              data-shot={w.slug}
-            />
-          ))
-        }
-      </div>
-      <p class="work-fact work-fact--left" data-fact="style">{works[0].style}</p>
-      <p class="work-fact work-fact--right" data-fact="place">{works[0].place}</p>
-    </div>
-
+  <div class="frame work-stage">
     <ol class="work-list" role="list">
-      <li class="work-heading"><h2 id="trabalhos-titulo" class="condensed">Trabalhos</h2></li>
       {
         works.map((w, i) => (
           <li class="work-item" data-style={w.style} data-slug={w.slug}>
@@ -61,7 +43,22 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
               data-alt={w.alt}
             >
               {w.name}
-              <span class="sr-only">, {w.style}, {w.place}. Abrir foto.</span>
+              <span class="sr-only">, {w.style}, {w.place}. Ver foto em detalhe.</span>
+            </button>
+            {/* No celular cada trabalho mostra a própria foto, sem quadro fixo. */}
+            <button type="button" class="work-inline" data-open-slug={w.slug} tabindex="-1" aria-hidden="true">
+              <Picture
+                src={w.image}
+                formats={['avif', 'webp']}
+                widths={[360, 540, 720]}
+                sizes="100vw"
+                alt=""
+                loading="lazy"
+              />
+              <span class="work-inline-meta">
+                <span>{w.style}</span>
+                <span>{w.place}</span>
+              </span>
             </button>
           </li>
         ))
@@ -73,6 +70,29 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
         </p>
       </li>
     </ol>
+
+    <div class="work-hold">
+      <button type="button" class="work-frame" data-work-frame data-open-current aria-label="Ver em detalhe">
+        {
+          works.map((w, i) => (
+            <Picture
+              src={w.image}
+              formats={['avif', 'webp']}
+              widths={[480, 640, 960]}
+              sizes="42vw"
+              alt=""
+              loading="lazy"
+              class:list={['work-shot', i === 0 && 'is-current']}
+              data-shot={w.slug}
+            />
+          ))
+        }
+      </button>
+      <div class="work-caption">
+        <p><span data-fact="style">{works[0].style}</span>, <span data-fact="place">{works[0].place.toLowerCase()}</span></p>
+        <button type="button" class="work-detail" data-open-current>Ver em detalhe</button>
+      </div>
+    </div>
   </div>
 
   <dialog class="lightbox on-ink" data-lightbox aria-labelledby="lightbox-titulo">
@@ -92,80 +112,121 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
 </section>
 
 <style>
-  .work { --frame: min(31vw, 460px); padding-block: clamp(80px, 8vw, 140px) 0; }
+  .work { --frame: min(42vw, 68svh); padding-block: clamp(96px, 10vw, 180px) clamp(96px, 10vw, 180px); }
   .work > :global(.torn-edge) { color: var(--color-ink); }
 
-  .work-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; position: relative; z-index: 3; }
+  .work-head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 24px;
+    align-items: end;
+  }
+  .work-head h2 { grid-column: 1 / 7; }
+  .work-hint { grid-column: 7 / 13; max-width: 30ch; }
+  .work-filters { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
   .work-filter {
     font: inherit;
-    font-size: var(--step-small);
-    color: var(--color-wash-light);
+    font-size: var(--step-body);
+    min-height: 44px;
+    padding: 0 16px;
+    color: var(--color-paper);
+    background: var(--color-ink-2);
+    border: 0;
+    cursor: pointer;
+    transition: background-color var(--t-hover) ease, color var(--t-hover) ease;
+  }
+  .work-filter[aria-pressed='true'] { background: var(--color-paper); color: var(--color-ink); }
+  @media (hover: hover) and (pointer: fine) {
+    .work-filter[aria-pressed='false']:hover { background: #2c2c2c; }
+  }
+
+  .work-stage {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: start;
+  }
+
+  .work-list {
+    grid-column: 1 / 7;
+    grid-row: 1;
+    margin: 0;
+    padding: calc(50svh - var(--frame) / 2) 0 calc(50svh - 0.5em);
+    list-style: none;
+  }
+  .work-name {
+    display: block;
+    font: inherit;
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(64px, 8.4vw, 140px);
+    line-height: 0.95;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--color-paper);
+    opacity: 0.45;
     background: none;
     border: 0;
-    padding: 8px 0;
+    padding: 0.04em 0;
     cursor: pointer;
     text-decoration: underline;
+    text-decoration-thickness: 0.05em;
+    text-underline-offset: 0.12em;
     text-decoration-color: transparent;
-    text-underline-offset: 0.3em;
-    transition: color var(--t-hover) ease, text-decoration-color var(--t-hover) ease;
+    transition: opacity var(--t-ui) ease, color var(--t-hover) ease, text-decoration-color var(--t-hover) ease;
   }
-  .work-filter[aria-pressed='true'] { color: var(--color-paper); text-decoration-color: var(--color-accent); }
-  @media (hover: hover) and (pointer: fine) { .work-filter:hover { color: var(--color-paper); } }
-
-  .work-stage { position: relative; padding-bottom: 30svh; }
+  .work-item.is-current .work-name { opacity: 1; text-decoration-color: var(--color-stencil-light); }
+  @media (hover: hover) and (pointer: fine) {
+    .work-name:hover { opacity: 1; color: var(--color-stencil-light); text-decoration-color: currentColor; }
+  }
+  .work-inline { display: none; }
+  .work-empty { max-width: 34ch; color: var(--color-paper); }
 
   .work-hold {
+    grid-column: 7 / 13;
+    grid-row: 1;
     position: sticky;
     top: calc(50svh - var(--frame) / 2);
-    height: var(--frame);
-    margin-bottom: calc(-1 * var(--frame));
     display: grid;
-    place-items: center;
-    z-index: 0;
+    gap: 16px;
+    justify-items: end;
+    margin-top: calc(50svh - var(--frame) / 2);
   }
-  .work-frame { position: relative; width: var(--frame); height: var(--frame); overflow: clip; background: var(--color-ink-2); }
+  .work-frame {
+    position: relative;
+    width: var(--frame);
+    height: var(--frame);
+    padding: 0;
+    border: 0;
+    overflow: clip;
+    background: var(--color-ink-2);
+    cursor: zoom-in;
+  }
   .work-frame :global(picture),
   .work-frame :global(img),
   .work-frame :global(canvas) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .work-frame :global(.work-shot) { opacity: 0; transition: opacity 200ms ease; }
   .work-frame :global(.work-shot.is-current) { opacity: 1; }
-  .work-frame::after { content: ''; position: absolute; inset: 0; background: rgb(0 0 0 / 0.3); z-index: 2; }
   .work-frame.has-gl :global(.work-shot) { visibility: hidden; }
 
-  .work-fact {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: var(--step-small);
-    color: var(--color-paper);
-    width: 12vw;
-  }
-  /* Nas margens, fora do alcance dos nomes que passam pelo meio. */
-  .work-fact--left { left: var(--margin); }
-  .work-fact--right { right: var(--margin); text-align: right; }
-
-  .work-list { position: relative; z-index: 1; margin: 0; padding: 30svh 0 0; list-style: none; text-align: center; }
-  .work-heading h2 { font-size: clamp(88px, 14vw, 210px); color: var(--color-wash); margin-bottom: 0.08em; }
-
-  .work-name {
+  .work-caption { width: var(--frame); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .work-caption p { color: var(--color-paper); }
+  .work-detail {
     font: inherit;
-    font-weight: 800;
-    font-stretch: 75%;
-    font-size: clamp(88px, 14vw, 210px);
-    line-height: 0.85;
-    color: var(--color-paper);
-    opacity: 0.4;
-    background: none;
+    font-weight: 700;
+    min-height: 44px;
+    padding: 0 18px;
     border: 0;
-    padding: 0.02em 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
     cursor: pointer;
-    transition: opacity var(--t-ui) ease, color var(--t-hover) ease;
+    transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
   }
-  .work-item.is-current .work-name { opacity: 1; }
+  .work-detail:active { transform: scale(0.97); }
   @media (hover: hover) and (pointer: fine) {
-    .work-name:hover { opacity: 1; color: var(--color-stencil-light); }
+    .work-detail:hover { background: var(--color-stencil-light); }
   }
-  .work-empty { max-width: 34ch; margin: 10vh auto 0; color: var(--color-paper); }
 
   .lightbox {
     width: 100vw;
@@ -195,16 +256,27 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
   .lightbox-info { display: grid; gap: 18px; align-content: center; justify-items: start; max-width: 36ch; }
   .lightbox-title { font-size: var(--step-display); }
   .lightbox-note { font-size: var(--step-lead); line-height: 1.35; }
-  .lightbox-close { position: absolute; top: var(--margin); right: var(--margin); font: inherit; font-size: var(--step-small); color: var(--color-paper); background: none; border: 0; cursor: pointer; padding: 8px; }
+  .lightbox-close { position: absolute; top: var(--margin); right: var(--margin); font: inherit; font-size: var(--step-body); color: var(--color-paper); background: none; border: 0; cursor: pointer; padding: 8px; }
 
   @media (max-width: 820px) {
-    .work { --frame: 60vw; }
-    .work-hold { display: block; }
-    .work-frame { margin-inline: auto; }
-    /* No celular os nomes ocupam a largura toda; estilo e local ficam no lightbox. */
-    .work-fact { display: none; }
-    .work-heading h2,
-    .work-name { font-size: 15vw; line-height: 1; }
+    .work-head h2,
+    .work-hint { grid-column: 1 / -1; }
+    .work-list { grid-column: 1 / -1; padding: 40px 0 0; display: grid; gap: 56px; }
+    .work-hold { display: none; }
+    .work-name { font-size: 13vw; opacity: 1; line-height: 1; margin-bottom: 12px; }
+    .work-inline {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--color-paper);
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+    }
+    .work-inline :global(img) { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .work-inline-meta { display: flex; justify-content: space-between; padding-top: 10px; }
     .lightbox-body { grid-template-columns: 1fr; align-content: start; overflow-y: auto; padding-top: 64px; }
     .lightbox-zoom { height: 60svh; }
   }

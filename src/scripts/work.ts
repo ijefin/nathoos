@@ -31,7 +31,7 @@ export function initWork({ reduced, touch, lenis }: Ctx) {
     items.forEach((it) => it.classList.toggle('is-current', it === li));
     const btn = li.querySelector<HTMLButtonElement>('[data-open-work]')!;
     factStyle.textContent = btn.dataset.styleLabel ?? '';
-    factPlace.textContent = btn.dataset.place ?? '';
+    factPlace.textContent = (btn.dataset.place ?? '').toLowerCase();
     swap(slug);
   };
   items[0]?.classList.add('is-current');
@@ -98,6 +98,11 @@ export function initWork({ reduced, touch, lenis }: Ctx) {
     }),
   );
   dialog.querySelector('[data-close]')!.addEventListener('click', close);
+
+  // O quadro e o botão "Ver em detalhe" abrem o trabalho atual; a foto do celular abre o seu.
+  const openSlug = (slug: string) => section.querySelector<HTMLButtonElement>(`.work-name[data-open-work="${slug}"]`)?.click();
+  section.querySelectorAll<HTMLElement>('[data-open-current]').forEach((el) => el.addEventListener('click', () => openSlug(current)));
+  section.querySelectorAll<HTMLElement>('[data-open-slug]').forEach((el) => el.addEventListener('click', () => openSlug(el.dataset.openSlug!)));
   dialog.addEventListener('click', (e) => {
     if (e.target === dialog) close();
   });

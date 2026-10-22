@@ -1,0 +1,54 @@
+---
+/**
+ * Respingo de tinta: uma mancha irregular com gotas em volta, gerada no build a partir de uma semente
+ * (sempre igual). Fica nos cantos dos cards, fora da área do texto.
+ */
+interface Props {
+  seed: number;
+  color: 'stencil' | 'accent' | 'ink';
+  class?: string;
+}
+const { seed, color, class: className } = Astro.props;
+
+let s = seed * 7919 + 104729;
+const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+
+// Mancha principal: raio com ruído em volta de um círculo, suavizado com curvas.
+const cx = 60;
+const cy = 60;
+const n = 18;
+const pts = Array.from({ length: n }, (_, i) => {
+  const a = (i / n) * Math.PI * 2;
+  const spike = rand() > 0.78 ? 1.35 + rand() * 0.35 : 0.82 + rand() * 0.28;
+  const r = 30 * spike;
+  return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+});
+const mid = (p: number[], q: number[]) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+let d = '';
+pts.forEach((p, i) => {
+  const next = pts[(i + 1) % n];
+  const m = mid(p, next);
+  if (i === 0) d += `M${mid(pts[n - 1], p).map((v) => v.toFixed(1)).join(' ')}`;
+  d += ` Q${p[0].toFixed(1)} ${p[1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`;
+});
+d += 'Z';
+
+// Gotas soltas em volta, menores quanto mais longe.
+const drops = Array.from({ length: 7 }, () => {
+  const a = rand() * Math.PI * 2;
+  const dist = 44 + rand() * 30;
+  return { x: cx + Math.cos(a) * dist, y: cy + Math.sin(a) * dist, r: Math.max(1.6, 7 - dist / 14 + rand() * 2) };
+});
+---
+
+<svg class:list={['ink-splat', `ink-splat--${color}`, className]} viewBox="0 0 120 120" aria-hidden="true">
+  <path d={d}></path>
+  {drops.map((g) => <circle cx={g.x.toFixed(1)} cy={g.y.toFixed(1)} r={g.r.toFixed(1)}></circle>)}
+</svg>
+
+<style>
+  .ink-splat { position: absolute; pointer-events: none; overflow: visible; }
+  .ink-splat--stencil { fill: var(--color-stencil); }
+  .ink-splat--accent { fill: var(--color-accent); }
+  .ink-splat--ink { fill: var(--color-ink); }
+</style>
