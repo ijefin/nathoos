@@ -176,7 +176,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
 
 });
 
-// ---------- ENVIAR ocupa exatamente a largura útil da faixa ----------
+// ---------- Palavras que ocupam exatamente a largura útil (ENVIAR, o nome no rodapé) ----------
 const fitWord = (el: HTMLElement) => {
   el.style.fontSize = '';
   const range = document.createRange();
@@ -186,13 +186,12 @@ const fitWord = (el: HTMLElement) => {
   const size = parseFloat(getComputedStyle(el).fontSize);
   el.style.fontSize = `${(size * el.clientWidth) / textWidth}px`;
 };
-const sendWord = document.querySelector<HTMLElement>('.send-word');
-if (sendWord) {
-  const fit = () => fitWord(sendWord);
+document.querySelectorAll<HTMLElement>('.send-word, [data-fit]').forEach((el) => {
+  const fit = () => fitWord(el);
   fit();
   document.fonts?.ready.then(fit);
-  new ResizeObserver(fit).observe(sendWord.parentElement!);
-}
+  new ResizeObserver(fit).observe(el.parentElement!);
+});
 
 // ---------- Interações ----------
 initWork({ reduced, touch, lenis });

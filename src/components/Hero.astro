@@ -10,9 +10,13 @@ const nav = [
 ---
 
 <header class="hero grain" id="inicio">
+  <nav class="hero-nav" aria-label="Seções">
+    {nav.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
+  </nav>
+
   <h1 class="hero-name display">
-    <span class="hero-first mask-line"><span data-line style="--i:0">Nathan</span></span>
-    <span class="hero-last mask-line"><span data-line style="--i:1">Augusto</span></span>
+    <span class="mask-line"><span data-line style="--i:0">Nathan</span></span>
+    <span class="mask-line"><span data-line style="--i:1">Augusto</span></span>
   </h1>
 
   <figure class="hero-media" data-open>
@@ -43,10 +47,6 @@ const nav = [
       <a class="link" href="#processo">Conheça meu processo</a>
     </div>
   </div>
-
-  <nav class="hero-nav" aria-label="Seções">
-    {nav.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
-  </nav>
 </header>
 
 <a class="button float-cta" href="#orcamento" data-float-cta>
@@ -63,57 +63,62 @@ const nav = [
 </div>
 
 <style>
+  /* O nome é um bloco só, com o texto logo abaixo; o vídeo da tinta ocupa a coluna da direita inteira. */
   .hero {
-    --name: clamp(72px, 9vw, 150px);
-    --edge: 28px;
+    --media: calc(5 * var(--col) + 4 * var(--gutter) + var(--margin));
     position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--media);
+    grid-template-rows: auto 1fr auto auto 1fr;
+    grid-template-areas:
+      'nav  media'
+      '.    media'
+      'name media'
+      'copy media'
+      '.    media';
+    column-gap: var(--gutter);
     height: 100svh;
-    min-height: 620px;
+    min-height: 640px;
     max-height: 1100px;
     background: var(--color-paper);
     overflow: clip;
     isolation: isolate;
   }
 
-  /* O h1 ocupa o palco inteiro para ter tamanho; as metades vão para os cantos. */
-  .hero-name { position: absolute; inset: 0; z-index: 2; font-size: var(--name); margin: 0; pointer-events: none; }
-  .hero-first,
-  .hero-last { position: absolute; z-index: 2; white-space: nowrap; }
-  .hero-first { top: var(--edge); left: var(--margin); }
-  .hero-last { bottom: var(--edge); right: var(--margin); }
+  .hero-nav {
+    grid-area: nav;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    padding: 24px var(--margin) 0;
+    font-size: var(--step-lead);
+    font-weight: 600;
+  }
+
+  .hero-name {
+    grid-area: name;
+    margin: 0;
+    padding-left: var(--margin);
+    font-size: clamp(56px, 7.4vw, 128px);
+  }
+
+  .hero-copy {
+    grid-area: copy;
+    display: grid;
+    gap: 28px;
+    max-width: 34ch;
+    margin-top: clamp(28px, 3vw, 48px);
+    padding-left: var(--margin);
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
 
   .hero-media {
-    position: absolute;
+    grid-area: media;
     margin: 0;
-    top: 0;
-    right: 0;
-    width: calc(5 * var(--col) + 4 * var(--gutter) + var(--margin));
-    height: calc(100% - var(--name) * 0.88 - var(--edge) - 32px);
     background: #0d0d0d;
     overflow: clip;
   }
   .hero-media video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
-
-  .hero-copy {
-    position: absolute;
-    left: calc(var(--margin) + 1 * (var(--col) + var(--gutter)));
-    top: 42%;
-    width: min(34ch, calc(5 * var(--col) + 4 * var(--gutter)));
-    display: grid;
-    gap: 28px;
-  }
-  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
-
-  .hero-nav {
-    position: absolute;
-    top: 42%;
-    right: calc(var(--margin) + 5 * (var(--col) + var(--gutter)));
-    display: grid;
-    justify-items: end;
-    gap: 10px;
-    font-size: var(--step-lead);
-    font-weight: 600;
-  }
 
   .site-bar {
     display: none;
@@ -166,27 +171,17 @@ const nav = [
     }
 
     .hero {
-      --name: 13vw;
-      --edge: 16px;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      grid-template-areas: 'name' 'media' 'copy';
       height: auto;
-      min-height: 100svh;
+      min-height: 0;
       max-height: none;
-      display: grid;
-      align-content: start;
-      padding-top: calc(var(--edge) + var(--name) * 0.9 + 16px);
-      padding-bottom: calc(var(--edge) + var(--name) * 0.9 + 24px);
+      padding-bottom: 48px;
     }
-    .hero-media {
-      position: relative;
-      width: 100%;
-      height: 56svh;
-    }
-    .hero-copy {
-      position: static;
-      width: auto;
-      padding: 24px var(--margin) 0;
-      gap: 20px;
-    }
+    .hero-name { font-size: 13vw; padding: 20px var(--margin) 20px; }
+    .hero-media { height: 56svh; }
+    .hero-copy { max-width: none; margin-top: 24px; padding-right: var(--margin); gap: 20px; }
     .hero-copy .lead { font-size: 1.1875rem; }
     .hero-nav { display: none; }
     .site-bar-links { display: none; }
