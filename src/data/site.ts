@@ -24,7 +24,7 @@ import bancada from '../assets/media/about/bancada.jpg';
  * @ do Instagram e endereço do estúdio. Campos vazios somem da página.
  */
 export const contact = {
-  whatsapp: '5500000000000',
+  whatsapp: '554797818221',
   instagram: '', // TODO: @ real do Nathan (sem o @)
   address: '',
   mapsUrl: '',
