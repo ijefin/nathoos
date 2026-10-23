@@ -6,7 +6,8 @@ import ajusto from '../assets/media/process/ajusto.jpg';
 import tatuo from '../assets/media/process/tatuo.jpg';
 
 import lobo from '../assets/media/work/lobo.jpg';
-import tigre from '../assets/media/work/tigre.jpg';
+import tigreCostas from '../assets/media/work/tigre-costas.jpg';
+import coberturaBraco from '../assets/media/work/cobertura-braco.jpg';
 import caveira from '../assets/media/work/caveira.jpg';
 import mewtwo from '../assets/media/work/mewtwo.jpg';
 import perna from '../assets/media/work/perna.jpg';
@@ -97,7 +98,8 @@ export const works: Work[] = [
   { slug: 'caveira', name: 'Caveira', style: 'Blackwork', place: 'Braço', image: caveira, alt: 'Caveira com arame farpado em preto, com respingos vermelhos', note: 'Caveira com arame farpado, preto sólido e respingos de vermelho.' },
   { slug: 'mewtwo', name: 'Mewtwo', style: 'Preto e cinza', place: 'Coxa', image: mewtwo, alt: 'Mewtwo em preto e cinza fechando a coxa', note: 'Feita em convenção, com o time ODD.' },
   { slug: 'perna', name: 'Perna', style: 'Blackwork', place: 'Perna inteira', image: perna, alt: 'Perna fechada com lettering gótico e figura em preto', note: 'Desenhada em freehand direto na pele antes de tatuar.' },
-  { slug: 'tigre', name: 'Tigre', style: 'Preto e cinza', place: 'Braço', image: tigre, alt: 'Detalhe do focinho de um tigre tatuado em preto e cinza', note: 'Detalhe de pelagem e focinho.' },
+  { slug: 'tigre', name: 'Tigre', style: 'Preto e cinza', place: 'Costas inteiras', image: tigreCostas, alt: 'Tigre realista fechando as costas inteiras', note: 'Realismo animal de ombro a ombro, com o olhar como centro do projeto.' },
+  { slug: 'cobertura', name: 'Cobertura', style: 'Cobertura', place: 'Braço e ombro', image: coberturaBraco, alt: 'Braço fechado em preto e cinza que cobriu uma tatuagem colorida', note: 'Cobriu uma tatuagem colorida de planetas e astronauta. A jornada completa está em Casos reais.' },
   { slug: 'costas', name: 'Costas', style: 'Preto e cinza', place: 'Costas', image: costas, alt: 'Nathan tatuando as costas de um cliente já tatuado', note: 'Em sessão.' },
   { slug: 'antebraco', name: 'Antebraço', style: 'Preto e cinza', place: 'Antebraço', image: antebraco, alt: 'Antebraço com stencil roxo e sombras em andamento', note: 'Em sessão, sobre o stencil.' },
 ];

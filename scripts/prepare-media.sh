@@ -8,6 +8,9 @@ cd "$(dirname "$0")/.."
 
 A=_raw/zip-a   # estúdio
 D=_raw/zip-d   # Nathan, trabalhos, vídeos
+E=_raw/zip-e   # cobertura masculina (antes, sessões, braço fechado)
+F=_raw/zip-f   # tigre nas costas, no estúdio
+G=_raw/zip-g   # tigre nas costas, resultado e close do olho
 IMG=src/assets/media
 VID=public/media
 TMP=$(mktemp -d); trap 'rm -r -- "$TMP"' EXIT
@@ -52,10 +55,27 @@ mkdir -p "$IMG/intro"
 pb "$D/WhatsApp Image 2026-10-22 at 11.50.52.jpeg" "$IMG/intro/sessao.jpg"
 
 # ---------- Abertura v2: Nathan (P&B) e o tigre (cor), separados pelo rasgo ----------
-# TODO: trocar o tigre pela foto original em alta, com o olho (o recorte do post só tem o focinho).
 mkdir -p "$IMG/hero"
 pb "$D/WhatsApp Image 2026-10-22 at 11.50.33 (1).jpeg" "$IMG/hero/nathan.jpg"
-magick "$D/WhatsApp Image 2026-10-22 at 11.50.32 (1).jpeg" -crop 296x580+0+0 +repage -unsharp 0x0.8+0.6+0 -quality 92 "$IMG/hero/tigre.jpg"
+# O olho do tigre das costas (close-up enviado em 22/10 21:34).
+crop "$G/WhatsApp Image 2026-10-22 at 21.34.44.jpeg" 720x1080+0+90 "$IMG/hero/tigre.jpg"
+
+# ---------- Jornadas (cor original: são trabalhos dele) ----------
+J=src/assets/media/jornadas
+mkdir -p "$J"
+# Cobertura masculina: espaço colorido → braço fechado em preto e cinza (fotos de 22/10 21:42).
+# Recortes sem o rosto do cliente (decisão de 22/10: publicar só braço e ombro).
+crop "$E/WhatsApp Image 2026-10-22 at 21.42.11.jpeg"     436x545+0+250  "$J/cob-m-antiga.jpg"
+crop "$E/WhatsApp Image 2026-10-22 at 21.42.12 (1).jpeg" 613x766+0+250  "$J/cob-m-sessao.jpg"
+crop "$E/WhatsApp Image 2026-10-22 at 21.42.12 (3).jpeg" 576x720+0+420  "$J/cob-m-ombro.jpg"
+crop "$E/WhatsApp Image 2026-10-22 at 21.42.13.jpeg"     576x720+0+360  "$J/cob-m-final.jpg"
+# Tigre nas costas, do zero (fotos de 22/10 21:33 e 21:34).
+crop "$F/WhatsApp Image 2026-10-22 at 21.33.43 (2).jpeg" 720x900+0+130  "$J/tigre-estudio.jpg"
+crop "$G/WhatsApp Image 2026-10-22 at 21.34.44 (1).jpeg" 720x900+0+40   "$J/tigre-costas.jpg"
+crop "$G/WhatsApp Image 2026-10-22 at 21.34.44.jpeg"     720x900+0+200  "$J/tigre-olho.jpg"
+# Índice de trabalhos (quadrado).
+crop "$G/WhatsApp Image 2026-10-22 at 21.34.44 (1).jpeg" 720x720+0+150  "$IMG/work/tigre-costas.jpg"
+crop "$E/WhatsApp Image 2026-10-22 at 21.42.13.jpeg"     576x576+0+380  "$IMG/work/cobertura-braco.jpg"
 
 # ---------- Antes de decidir: stencil posicionado (só o roxo) ----------
 mkdir -p "$IMG/planning"

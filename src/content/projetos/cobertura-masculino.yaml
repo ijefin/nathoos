@@ -1,21 +1,35 @@
-# Projeto real de cobertura (masculino). Tudo pendente: o Nathan precisa mandar o material.
-# Publicar só com autorização do cliente para o antes e depois (status: publicado).
-titulo: Cobertura (masculino)
+# Cobertura masculina: espaço colorido (planetas e astronauta) coberto por braço fechado em preto e cinza.
+# Fotos enviadas pelo Nathan em 22/10, 21:42.
+# Publicado sem o rosto do cliente: os recortes mostram só braço e ombro (decisão de 22/10).
+# TODO: confirmar se a foto final é do braço já cicatrizado.
+titulo: Braço fechado sobre o espaço colorido
 jornada: cobertura
 perfil: masculino
-local: A definir
-status: rascunho
+local: Braço e ombro
+status: publicado
 ordem: 2
+resumo: Uma tatuagem colorida de tema espacial virou um braço fechado em preto e cinza, do antebraço ao ombro.
 etapas:
   - chave: antiga
-    pendente: Foto da tatuagem antiga, com boa luz, antes de qualquer marcação.
+    texto: Planetas e astronauta coloridos no ombro e no braço.
+    midia:
+      - imagem: ../../assets/media/jornadas/cob-m-antiga.jpg
+        alt: Braço com a tatuagem antiga, colorida, de planetas e astronauta
   - chave: planejamento
-    pendente: O que foi avaliado (cicatrização, tom, contraste) e a direção proposta.
+    pendente: O que foi avaliado (tons, contraste, cicatrização) e a direção proposta.
   - chave: criacao
     pendente: Desenho ou simulação sobre a foto da tatuagem antiga.
   - chave: sessao
-    pendente: Fotos ou vídeo da sessão.
+    texto: O preto e cinza avança pelo braço; o colorido do ombro ainda aparece por cima.
+    midia:
+      - imagem: ../../assets/media/jornadas/cob-m-sessao.jpg
+        alt: Braço já coberto em preto e cinza, com o colorido antigo ainda no ombro
+      - imagem: ../../assets/media/jornadas/cob-m-ombro.jpg
+        alt: Sessão no ombro, onde o elmo em preto cobre os planetas coloridos
   - chave: cicatrizado
-    pendente: Foto do resultado já cicatrizado.
+    texto: Braço fechado em preto e cinza, sem sinal do colorido antigo.
+    midia:
+      - imagem: ../../assets/media/jornadas/cob-m-final.jpg
+        alt: Braço inteiro fechado em preto e cinza, do ombro ao punho
   - chave: feedback
     pendente: Depoimento do cliente, com autorização escrita para publicar.

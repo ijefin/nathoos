@@ -1,0 +1,27 @@
+# Tigre realista fechando as costas. Fotos enviadas pelo Nathan em 22/10, 21:33 e 21:34.
+# TODO: confirmar com o Nathan a ideia inicial, o planejamento e quantas sessões foram.
+titulo: Tigre nas costas
+jornada: zero
+local: Costas inteiras
+status: publicado
+ordem: 1
+resumo: Realismo animal ocupando as costas inteiras, com o olhar do tigre como centro do projeto.
+etapas:
+  - chave: ideia
+    pendente: Referências e a conversa inicial.
+  - chave: planejamento
+    pendente: Direção de estilo e simulação sobre a foto das costas.
+  - chave: desenvolvimento
+    pendente: Fotos ou vídeo do desenho e do stencil nas costas.
+  - chave: sessao
+    texto: No estúdio, com o tigre fechado de ombro a ombro.
+    midia:
+      - imagem: ../../assets/media/jornadas/tigre-estudio.jpg
+        alt: Costas inteiras com o tigre realista, no estúdio
+  - chave: resultado
+    texto: Pelo, listras e o olhar construídos em camadas de preto e tons quentes.
+    midia:
+      - imagem: ../../assets/media/jornadas/tigre-costas.jpg
+        alt: Tigre realista nas costas inteiras, de frente
+      - imagem: ../../assets/media/jornadas/tigre-olho.jpg
+        alt: Detalhe do olho do tigre, com o brilho e o pelo em volta

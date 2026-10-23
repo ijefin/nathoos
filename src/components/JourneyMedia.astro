@@ -6,9 +6,11 @@ import { asset } from '../lib/url';
 type Etapa = CollectionEntry<'projetos'>['data']['etapas'][number];
 interface Props {
   e: Etapa;
+  /** Qual mídia da etapa mostrar (padrão: a primeira). */
+  i?: number;
 }
-const { e } = Astro.props;
-const m = e.midia[0];
+const { e, i = 0 } = Astro.props;
+const m = e.midia[i];
 ---
 
 {
