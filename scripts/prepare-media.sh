@@ -54,11 +54,9 @@ crop_pb "$A/WhatsApp Image 2026-10-22 at 11.47.34.jpeg"     720x900+0+330    "$I
 mkdir -p "$IMG/intro"
 pb "$D/WhatsApp Image 2026-10-22 at 11.50.52.jpeg" "$IMG/intro/sessao.jpg"
 
-# ---------- Abertura v2: Nathan (P&B) e o tigre (cor), separados pelo rasgo ----------
+# ---------- Abertura: só o Nathan (P&B), com a borda rasgada ----------
 mkdir -p "$IMG/hero"
 pb "$D/WhatsApp Image 2026-10-22 at 11.50.33 (1).jpeg" "$IMG/hero/nathan.jpg"
-# O olho do tigre das costas (close-up enviado em 22/10 21:34).
-crop "$G/WhatsApp Image 2026-10-22 at 21.34.44.jpeg" 720x1080+0+90 "$IMG/hero/tigre.jpg"
 
 # ---------- Jornadas (cor original: são trabalhos dele) ----------
 J=src/assets/media/jornadas

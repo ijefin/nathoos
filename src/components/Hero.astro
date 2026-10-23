@@ -2,7 +2,6 @@
 import { Picture } from 'astro:assets';
 import ThemeToggle from './ThemeToggle.astro';
 import nathan from '../assets/media/hero/nathan.jpg';
-import tigre from '../assets/media/hero/tigre.jpg';
 
 const nav = [
   { href: '#jornadas', label: 'Casos reais' },
@@ -12,7 +11,7 @@ const nav = [
   { href: '#duvidas', label: 'Dúvidas' },
 ];
 
-// Rasgo diagonal irregular, gerado no build (sempre igual). Coordenadas em % da área das fotos.
+// Borda rasgada à esquerda da foto, gerada no build (sempre igual). Coordenadas em % da área da foto.
 let s = 2741;
 const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
 const line = (x0: number, x1: number, amp: number) => {
@@ -24,9 +23,9 @@ const line = (x0: number, x1: number, amp: number) => {
   }
   return pts;
 };
-const edge = line(62, 44, 2.2); // borda do tigre
-const back = line(58.4, 40.4, 2.6); // outra borda do papel
-const tigerClip = `polygon(${[...edge.map(([x, y]) => `${x}% ${y}%`), '100% 100%', '100% 0%'].join(', ')})`;
+const edge = line(9, 4, 2.4); // onde a foto começa
+const back = line(5.6, 0.8, 2.8); // borda de fora do papel
+const photoClip = `polygon(${[...edge.map(([x, y]) => `${x}% ${y}%`), '100% 100%', '100% 0%'].join(', ')})`;
 const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' ');
 ---
 
@@ -41,12 +40,12 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
 
   <div class="hero-text">
     <h1 class="hero-title">
-      <span class="mask-line"><span data-line style="--i:0">O detalhe que faz</span></span>
-      <span class="mask-line"><span data-line style="--i:1">a diferença no olhar.</span></span>
+      <span class="mask-line"><span data-line style="--i:0">Sua ideia é</span></span>
+      <span class="mask-line"><span data-line style="--i:1">o ponto de partida.</span></span>
     </h1>
     <p class="lead hero-lead" data-load style="--d:420ms">
-      Nathan Augusto é tatuador de preto e cinza, realismo animal e coberturas. Cada projeto nasce da conversa, da
-      anatomia e da intenção por trás da ideia.
+      Nathan Augusto é tatuador de preto e cinza, realismo animal e coberturas. O projeto nasce da conversa, da anatomia
+      e da intenção por trás da tatuagem.
     </p>
     <div class="hero-actions" data-load style="--d:500ms">
       <a class="button" href="#jornadas" data-magnetic>Ver casos reais</a>
@@ -55,24 +54,15 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
   </div>
 
   <div class="hero-media" data-open>
-    <Picture
-      src={nathan}
-      formats={['avif', 'webp']}
-      widths={[480, 720]}
-      sizes="(max-width: 820px) 100vw, 62vw"
-      alt="Nathan Augusto de perfil, concentrado, no estúdio"
-      loading="eager"
-      fetchpriority="high"
-      class="hero-nathan"
-    />
-    <div class="hero-tiger" style={`clip-path: ${tigerClip}`}>
+    <div class="hero-photo" style={`clip-path: ${photoClip}`}>
       <Picture
-        src={tigre}
+        src={nathan}
         formats={['avif', 'webp']}
         widths={[480, 720]}
-        sizes="(max-width: 820px) 70vw, 40vw"
-        alt="O olho de um tigre realista tatuado pelo Nathan nas costas de um cliente"
+        sizes="(max-width: 820px) 100vw, 50vw"
+        alt="Nathan Augusto de perfil, concentrado, no estúdio"
         loading="eager"
+        fetchpriority="high"
       />
     </div>
     <svg class="hero-tear" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -112,7 +102,7 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
 
 <style>
   .hero {
-    --media: calc(7 * var(--col) + 6 * var(--gutter) + var(--margin));
+    --media: calc(6 * var(--col) + 5 * var(--gutter) + var(--margin));
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--media);
@@ -163,20 +153,16 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
     position: relative;
     margin: 0;
     overflow: clip;
-    background: #0d0d0d;
   }
-  .hero-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .hero-media :global(.hero-nathan) { position: absolute; inset: 0; width: 62%; object-position: 50% 30%; }
-  .hero-tiger { position: absolute; inset: 0; }
-  .hero-tiger :global(picture) { position: absolute; inset: 0 0 0 38%; }
-  .hero-tiger :global(img) { object-position: 42% 38%; }
+  .hero-photo { position: absolute; inset: 0; }
+  .hero-photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; }
   .hero-tear { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--color-paper); }
 
   @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .hero-tiger { animation: tear-in 1100ms var(--ease-expo) 250ms both; }
-    :global(.js) .hero-tear { animation: tear-in 1100ms var(--ease-expo) 200ms both; }
+    :global(.js) .hero-photo { animation: tear-in 1100ms var(--ease-expo) 150ms both; }
+    :global(.js) .hero-tear { animation: tear-in 1100ms var(--ease-expo) 100ms both; }
   }
-  @keyframes tear-in { from { transform: translateX(8%); } to { transform: none; } }
+  @keyframes tear-in { from { transform: translateX(6%); } to { transform: none; } }
 
   /* Barra fixa do desktop: aparece ao rolar para cima depois da abertura. */
   .site-bar { display: none; }
