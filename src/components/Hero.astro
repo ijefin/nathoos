@@ -1,7 +1,9 @@
 ---
 import { Picture } from 'astro:assets';
 import ThemeToggle from './ThemeToggle.astro';
+import InkSplat from './InkSplat.astro';
 import nathan from '../assets/media/hero/nathan.jpg';
+import logo from '../assets/media/brand/logo.png';
 
 const nav = [
   { href: '#jornadas', label: 'Projetos' },
@@ -11,22 +13,6 @@ const nav = [
   { href: '#duvidas', label: 'Dúvidas' },
 ];
 
-// Borda rasgada à esquerda da foto, gerada no build (sempre igual). Coordenadas em % da área da foto.
-let s = 2741;
-const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
-const line = (x0: number, x1: number, amp: number) => {
-  const pts: [number, number][] = [];
-  for (let y = 0; y <= 100; y += 2.5) {
-    const base = x0 + ((x1 - x0) * y) / 100;
-    const jag = (rand() - 0.5) * amp + (rand() > 0.88 ? (rand() - 0.5) * amp * 2.4 : 0);
-    pts.push([+(base + jag).toFixed(2), y]);
-  }
-  return pts;
-};
-const edge = line(9, 4, 2.4); // onde a foto começa
-const back = line(5.6, 0.8, 2.8); // borda de fora do papel
-const photoClip = `polygon(${[...edge.map(([x, y]) => `${x}% ${y}%`), '100% 100%', '100% 0%'].join(', ')})`;
-const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' ');
 ---
 
 <header class="hero grain" id="inicio">
@@ -53,21 +39,23 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
     </div>
   </div>
 
-  <div class="hero-media" data-open>
-    <div class="hero-photo" style={`clip-path: ${photoClip}`}>
-      <Picture
-        src={nathan}
-        formats={['avif', 'webp']}
-        widths={[480, 720]}
-        sizes="(max-width: 820px) 100vw, 50vw"
-        alt="Nathan Augusto de perfil, concentrado, no estúdio"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-    <svg class="hero-tear" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <polygon points={strip}></polygon>
-    </svg>
+  <div class="hero-frame">
+    {/* Respingos de tinta saindo por trás dos cantos do retrato, longe do rosto. */}
+    <InkSplat seed={41} color="accent" class="hero-splat hero-splat--a" />
+    <InkSplat seed={17} color="stencil" class="hero-splat hero-splat--b" />
+  <figure class="hero-media" data-open>
+    <Picture
+      src={nathan}
+      formats={['avif', 'webp']}
+      widths={[480, 720]}
+      sizes="(max-width: 820px) 100vw, 44vw"
+      alt="Nathan Augusto de perfil no estúdio, sob a luz do ring light"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-photo"
+    />
+  </figure>
+    <Picture src={logo} formats={['webp']} widths={[120, 240]} sizes="120px" alt="" loading="eager" class="hero-seal" />
   </div>
 </header>
 
@@ -102,14 +90,14 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
 
 <style>
   .hero {
-    --media: calc(6 * var(--col) + 5 * var(--gutter) + var(--margin));
+    --top: 76px;
+    --photo-h: min(calc(100svh - var(--top) - 2 * var(--margin)), 980px);
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--media);
+    grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto 1fr;
-    column-gap: var(--gutter);
-    height: 100svh;
-    min-height: 640px;
+    column-gap: clamp(32px, 5vw, 96px);
+    min-height: 100svh;
     max-height: 1100px;
     background: var(--bg);
     overflow: clip;
@@ -125,7 +113,6 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
     align-items: center;
     gap: 28px;
     padding: 18px var(--margin);
-    background: var(--bg);
   }
   .hero-mark { font-weight: 800; font-stretch: 150%; text-transform: uppercase; text-decoration: none; font-size: var(--step-body); white-space: nowrap; }
   .hero-nav { display: flex; flex-wrap: wrap; gap: 6px 24px; margin-left: auto; font-size: var(--step-body); font-weight: 600; }
@@ -136,33 +123,55 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
     align-self: center;
     display: grid;
     gap: 28px;
-    padding: 0 0 48px var(--margin);
+    padding: 0 0 var(--margin) var(--margin);
   }
   .hero-title {
-    font-size: clamp(2.5rem, 3.9vw, 4.5rem);
+    font-size: clamp(2.75rem, 4.6vw, 5.25rem);
     line-height: 0.98;
     letter-spacing: -0.025em;
     font-weight: 800;
   }
-  .hero-lead { max-width: 32ch; }
+  .hero-lead { max-width: 34ch; }
   .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
 
-  .hero-media {
+  /* Retrato vertical na proporção da foto: a cabeça inteira, sem ampliar além do original. */
+  .hero-frame {
     grid-column: 2;
     grid-row: 2;
     position: relative;
-    margin: 0;
-    overflow: clip;
+    align-self: start;
+    margin: 0 var(--margin) var(--margin) 0;
+    isolation: isolate;
   }
-  .hero-photo { position: absolute; inset: 0; }
-  .hero-photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; }
-  .hero-tear { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--color-paper); }
-
+  .hero-frame :global(.hero-splat) { z-index: -1; }
+  .hero-frame :global(.hero-splat--a) { width: clamp(130px, 12vw, 200px); height: auto; top: -4%; left: -9%; }
+  .hero-frame :global(.hero-splat--b) { width: clamp(150px, 13vw, 220px); height: auto; bottom: 2%; left: -11%; }
   @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .hero-photo { animation: tear-in 1100ms var(--ease-expo) 150ms both; }
-    :global(.js) .hero-tear { animation: tear-in 1100ms var(--ease-expo) 100ms both; }
+    :global(.js) .hero-frame :global(.hero-splat) { animation: splat-in 700ms var(--ease-expo) both; }
+    :global(.js) .hero-frame :global(.hero-splat--a) { animation-delay: 650ms; }
+    :global(.js) .hero-frame :global(.hero-splat--b) { animation-delay: 780ms; }
   }
-  @keyframes tear-in { from { transform: translateX(6%); } to { transform: none; } }
+  @keyframes splat-in { from { opacity: 0; transform: scale(0.3) rotate(-20deg); } }
+  .hero-media {
+    position: relative;
+    margin: 0;
+    height: var(--photo-h);
+    aspect-ratio: 4 / 5;
+    max-width: 52vw;
+    background: var(--bg-2);
+  }
+  .hero-media :global(.hero-photo) { width: 100%; height: 100%; object-fit: cover; object-position: 40% 30%; }
+  /* Selo com a logo dele no canto do retrato. */
+  .hero-frame :global(.hero-seal) {
+    position: absolute;
+    left: clamp(-56px, -3vw, -24px);
+    bottom: clamp(24px, 4vw, 56px);
+    width: clamp(88px, 8vw, 128px);
+    height: auto;
+    padding: 10px;
+    background: var(--color-ink);
+    border-radius: 50%;
+  }
 
   /* Barra fixa do desktop: aparece ao rolar para cima depois da abertura. */
   .site-bar { display: none; }
@@ -206,7 +215,6 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
     .hero {
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: auto auto auto;
-      height: auto;
       min-height: 0;
       max-height: none;
       padding-bottom: 48px;
@@ -216,7 +224,10 @@ const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' '
     :global(.hero-theme) { margin-left: auto; padding: 0 12px; }
     /* No topo do celular fica só o ícone; o nome continua para leitores de tela. */
     .hero-top :global(.theme-label) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-    .hero-media { grid-column: 1; grid-row: 2; height: 48svh; }
+    .hero-frame { grid-column: 1; grid-row: 2; margin: 0 var(--margin); }
+    .hero-frame :global(.hero-splat) { display: none; }
+    .hero-media { height: 50svh; aspect-ratio: auto; max-width: none; }
+    .hero-frame :global(.hero-seal) { left: 12px; bottom: 12px; width: 76px; padding: 8px; }
     .hero-text { grid-column: 1; grid-row: 3; padding: 28px var(--margin) 0; gap: 20px; }
     .hero-title { font-size: clamp(2rem, 8.6vw, 2.75rem); }
 

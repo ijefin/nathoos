@@ -54,9 +54,10 @@ crop "$A/WhatsApp Image 2026-10-22 at 11.47.34.jpeg"     720x900+0+330    "$IMG/
 mkdir -p "$IMG/intro"
 pb "$D/WhatsApp Image 2026-10-22 at 11.50.52.jpeg" "$IMG/intro/sessao.jpg"
 
-# ---------- Abertura: só o Nathan (P&B), com a borda rasgada ----------
+# ---------- Abertura: retrato do Nathan ----------
 mkdir -p "$IMG/hero"
-pb "$D/WhatsApp Image 2026-10-22 at 11.50.33 (1).jpeg" "$IMG/hero/nathan.jpg"
+# Retrato 4:5 com a cabeça inteira, em cor (a luz quente do ring light faz parte da foto).
+crop "$D/WhatsApp Image 2026-10-22 at 11.50.33 (1).jpeg" 720x900+0+40 "$IMG/hero/nathan.jpg"
 
 # ---------- Jornadas (cor original: são trabalhos dele) ----------
 J=src/assets/media/jornadas
