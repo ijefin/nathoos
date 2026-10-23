@@ -43,12 +43,12 @@ crop "$D/WhatsApp Image 2026-10-22 at 11.50.52 (2).jpeg" 600x600+0+560   "$IMG/w
 frame "$D/WhatsApp Video 2026-10-22 at 11.50.32.mp4" 33.6 $TMP/perna.jpg
 crop $TMP/perna.jpg 478x478+0+250                                 "$IMG/work/perna.jpg"
 
-# ---------- Sobre (4:5, preto e cinza) ----------
-crop_pb "$D/WhatsApp Image 2026-10-22 at 11.50.34 (2).jpeg" 720x900+0+120    "$IMG/about/nathan.jpg"
-crop_pb "$D/WhatsApp Image 2026-10-22 at 11.51.12.jpeg"     720x900+0+60     "$IMG/about/certificados.jpg"
-crop_pb "$D/WhatsApp Image 2026-10-22 at 11.51.19 (1).jpeg" 1069x1336+0+0    "$IMG/about/convencao.jpg"
-crop_pb "$A/WhatsApp Image 2026-10-22 at 11.47.35 (1).jpeg" 720x900+0+180    "$IMG/about/estudio.jpg"
-crop_pb "$A/WhatsApp Image 2026-10-22 at 11.47.34.jpeg"     720x900+0+330    "$IMG/about/bancada.jpg"
+# ---------- Sobre (4:5, cor original: as luzes do estúdio e o amarelo do carrinho contam) ----------
+crop "$D/WhatsApp Image 2026-10-22 at 11.50.34 (2).jpeg" 720x900+0+120    "$IMG/about/nathan.jpg"
+crop "$D/WhatsApp Image 2026-10-22 at 11.51.12.jpeg"     720x900+0+60     "$IMG/about/certificados.jpg"
+crop "$D/WhatsApp Image 2026-10-22 at 11.51.19 (1).jpeg" 1069x1336+0+0    "$IMG/about/convencao.jpg"
+crop "$A/WhatsApp Image 2026-10-22 at 11.47.35 (1).jpeg" 720x900+0+180    "$IMG/about/estudio.jpg"
+crop "$A/WhatsApp Image 2026-10-22 at 11.47.34.jpeg"     720x900+0+330    "$IMG/about/bancada.jpg"
 
 # ---------- Especialidades (16:9, preto e cinza) ----------
 mkdir -p "$IMG/intro"
