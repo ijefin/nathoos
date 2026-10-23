@@ -5,19 +5,19 @@ jornada: zero
 local: Perna inteira
 status: publicado
 ordem: 2
-resumo: Desenho feito à mão livre direto na pele, sem stencil impresso, e tatuado em preto.
+resumo: Desenhei à mão livre direto na pele, sem stencil impresso, e tatuei em preto.
 etapas:
   - chave: ideia
     pendente: Referências que o cliente mandou e a conversa inicial (print ou foto).
   - chave: planejamento
     pendente: Esboço, direção de estilo ou simulação mostrada ao cliente.
   - chave: desenvolvimento
-    texto: O desenho nasce em freehand, com marcador, em cima da anatomia da perna.
+    texto: Faço o desenho em freehand, com marcador, seguindo a anatomia da perna.
     midia:
       - video: freehand
         alt: Nathan desenha com marcador roxo direto na perna do cliente
   - chave: sessao
-    texto: A máquina passa a tinta preta por cima das linhas do freehand.
+    texto: Passo a tinta preta por cima das linhas do freehand.
     midia:
       - video: sessao
         alt: A máquina passando tinta preta sobre as linhas roxas

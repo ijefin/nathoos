@@ -8,7 +8,7 @@ perfil: masculino
 local: Braço e ombro
 status: publicado
 ordem: 2
-resumo: Uma tatuagem colorida de tema espacial virou um braço fechado em preto e cinza, do antebraço ao ombro.
+resumo: O cliente chegou com uma tatuagem colorida de tema espacial. Transformei em um braço fechado em preto e cinza, do antebraço ao ombro.
 etapas:
   - chave: antiga
     texto: Planetas e astronauta coloridos no ombro e no braço.
@@ -20,7 +20,7 @@ etapas:
   - chave: criacao
     pendente: Desenho ou simulação sobre a foto da tatuagem antiga.
   - chave: sessao
-    texto: O preto e cinza avança pelo braço; o colorido do ombro ainda aparece por cima.
+    texto: Comecei pelo braço; nesta etapa o colorido do ombro ainda aparece por cima.
     midia:
       - imagem: ../../assets/media/jornadas/cob-m-sessao.jpg
         alt: Braço já coberto em preto e cinza, com o colorido antigo ainda no ombro

@@ -34,13 +34,13 @@ const colunas = etapasCobertura.filter(
 <section class="journeys grain torn" id="jornadas" aria-labelledby="jornadas-titulo">
   <TornEdge seed={7} />
   <div class="frame journeys-head">
-    <h2 id="jornadas-titulo" class="head" data-split>Casos reais</h2>
-    <p class="lead">Antes de qualquer pergunta, o que já foi feito: do primeiro contato ao resultado, em fotos e vídeos.</p>
+    <h2 id="jornadas-titulo" class="head" data-split>Projetos, etapa por etapa</h2>
+    <p class="lead">Registro cada projeto do início ao fim: a tatuagem de antes, quando existe, o planejamento, as sessões e o resultado.</p>
   </div>
 
   <div class="frame journeys-tabs" role="tablist" aria-label="Jornadas">
     <button type="button" role="tab" id="aba-zero" aria-controls="painel-zero" aria-selected="true" data-tab>Do zero</button>
-    <button type="button" role="tab" id="aba-cobertura" aria-controls="painel-cobertura" aria-selected="false" tabindex="-1" data-tab>Cobertura</button>
+    <button type="button" role="tab" id="aba-cobertura" aria-controls="painel-cobertura" aria-selected="false" tabindex="-1" data-tab>Coberturas</button>
   </div>
 
   <div class="journeys-panel" role="tabpanel" id="painel-zero" aria-labelledby="aba-zero" data-panel>
@@ -107,16 +107,15 @@ const colunas = etapasCobertura.filter(
           </table>
           {pares.length === 1 && (
             <p class="pair-note">
-              O segundo projeto, {pares[0].perfil === 'masculino' ? 'feminino' : 'masculino'}, está sendo documentado e entra aqui
-              lado a lado.
+              Estou documentando um segundo projeto de cobertura, que vai entrar aqui lado a lado com este.
             </p>
           )}
         </div>
       ) : (
         <div class="frame journeys-empty">
           <p class="lead">
-            Dois projetos reais de cobertura estão sendo documentados, da tatuagem antiga ao resultado cicatrizado. O antes e
-            depois só entra aqui com autorização de cada cliente.
+            Estou documentando dois projetos de cobertura, da tatuagem antiga ao resultado cicatrizado. O antes e depois só
+            entra aqui com autorização de cada cliente.
           </p>
           <a class="button" href="#orcamento">Avaliar minha cobertura</a>
         </div>

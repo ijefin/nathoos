@@ -5,7 +5,7 @@ jornada: zero
 local: Costas inteiras
 status: publicado
 ordem: 1
-resumo: Realismo animal ocupando as costas inteiras, com o olhar do tigre como centro do projeto.
+resumo: Um tigre realista ocupando as costas inteiras. Montei a composição a partir do olhar, que comanda o resto do desenho.
 etapas:
   - chave: ideia
     pendente: Referências e a conversa inicial.
@@ -14,12 +14,12 @@ etapas:
   - chave: desenvolvimento
     pendente: Fotos ou vídeo do desenho e do stencil nas costas.
   - chave: sessao
-    texto: No estúdio, com o tigre fechado de ombro a ombro.
+    texto: No estúdio, com as costas fechadas de ombro a ombro.
     midia:
       - imagem: ../../assets/media/jornadas/tigre-estudio.jpg
         alt: Costas inteiras com o tigre realista, no estúdio
   - chave: resultado
-    texto: Pelo, listras e o olhar construídos em camadas de preto e tons quentes.
+    texto: Trabalhei o pelo, as listras e o olhar em camadas de preto e tons quentes.
     midia:
       - imagem: ../../assets/media/jornadas/tigre-costas.jpg
         alt: Tigre realista nas costas inteiras, de frente
