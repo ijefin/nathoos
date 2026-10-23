@@ -24,8 +24,8 @@ import { faq } from '../data/site';
 </section>
 
 <style>
-  .faq { background: var(--color-paper); color: var(--color-ink); padding-block: clamp(96px, 10vw, 180px); }
-  .faq > :global(.torn-edge) { color: var(--color-paper); }
+  .faq { background: var(--bg); color: var(--fg); padding-block: clamp(96px, 10vw, 180px); }
+  .faq > :global(.torn-edge) { color: var(--bg); }
   .faq-title { font-size: var(--step-title); line-height: 0.95; letter-spacing: -0.02em; max-width: 14ch; }
   .faq-list {
     margin-top: 80px;
@@ -34,7 +34,7 @@ import { faq } from '../data/site';
     gap: 12px;
   }
   .faq-item { padding: 12px 24px; margin-inline: -24px; transition: background-color var(--t-ui) ease; }
-  .faq-item[open] { background: var(--color-paper-2); padding-bottom: 24px; }
+  .faq-item[open] { background: var(--bg-2); padding-bottom: 24px; }
   summary {
     display: flex;
     justify-content: space-between;

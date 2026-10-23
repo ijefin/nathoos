@@ -51,6 +51,16 @@ crop_pb "$A/WhatsApp Image 2026-10-22 at 11.47.34.jpeg"     720x900+0+330    "$I
 mkdir -p "$IMG/intro"
 pb "$D/WhatsApp Image 2026-10-22 at 11.50.52.jpeg" "$IMG/intro/sessao.jpg"
 
+# ---------- Abertura v2: Nathan (P&B) e o tigre (cor), separados pelo rasgo ----------
+# TODO: trocar o tigre pela foto original em alta, com o olho (o recorte do post só tem o focinho).
+mkdir -p "$IMG/hero"
+pb "$D/WhatsApp Image 2026-10-22 at 11.50.33 (1).jpeg" "$IMG/hero/nathan.jpg"
+magick "$D/WhatsApp Image 2026-10-22 at 11.50.32 (1).jpeg" -crop 296x580+0+0 +repage -unsharp 0x0.8+0.6+0 -quality 92 "$IMG/hero/tigre.jpg"
+
+# ---------- Antes de decidir: stencil posicionado (só o roxo) ----------
+mkdir -p "$IMG/planning"
+ffmpeg -v error -y -i "$D/WhatsApp Image 2026-10-22 at 11.50.52 (2).jpeg" -vf "crop=720:900:0:260,$HOLD" -q:v 2 "$IMG/planning/stencil.jpg"
+
 # ---------- Marca ----------
 # Logo sem o disco preto, para uso sobre fundos escuros.
 magick "$D/WhatsApp Image 2026-10-22 at 11.50.16.jpeg" -fuzz 18% -transparent black -trim +repage -resize 640x640 "$IMG/brand/logo.png"

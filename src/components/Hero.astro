@@ -1,192 +1,267 @@
 ---
-import { asset } from '../lib/url';
+import { Picture } from 'astro:assets';
+import ThemeToggle from './ThemeToggle.astro';
+import nathan from '../assets/media/hero/nathan.jpg';
+import tigre from '../assets/media/hero/tigre.jpg';
 
 const nav = [
-  { href: '#processo', label: 'Processo' },
+  { href: '#jornadas', label: 'Casos reais' },
   { href: '#trabalhos', label: 'Trabalhos' },
+  { href: '#processo', label: 'Processo' },
   { href: '#sobre', label: 'Sobre' },
   { href: '#duvidas', label: 'Dúvidas' },
 ];
+
+// Rasgo diagonal irregular, gerado no build (sempre igual). Coordenadas em % da área das fotos.
+let s = 2741;
+const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+const line = (x0: number, x1: number, amp: number) => {
+  const pts: [number, number][] = [];
+  for (let y = 0; y <= 100; y += 2.5) {
+    const base = x0 + ((x1 - x0) * y) / 100;
+    const jag = (rand() - 0.5) * amp + (rand() > 0.88 ? (rand() - 0.5) * amp * 2.4 : 0);
+    pts.push([+(base + jag).toFixed(2), y]);
+  }
+  return pts;
+};
+const edge = line(62, 44, 2.2); // borda do tigre
+const back = line(58.4, 40.4, 2.6); // outra borda do papel
+const tigerClip = `polygon(${[...edge.map(([x, y]) => `${x}% ${y}%`), '100% 100%', '100% 0%'].join(', ')})`;
+const strip = [...edge, ...back.reverse()].map(([x, y]) => `${x},${y}`).join(' ');
 ---
 
 <header class="hero grain" id="inicio">
-  <nav class="hero-nav" aria-label="Seções">
-    {nav.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
-  </nav>
+  <div class="hero-top">
+    <a class="hero-mark" href="#inicio">Nathan Augusto</a>
+    <nav class="hero-nav" aria-label="Seções">
+      {nav.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
+    </nav>
+    <ThemeToggle class="hero-theme" />
+  </div>
 
-  <h1 class="hero-name display">
-    <span class="mask-line"><span data-line style="--i:0">Nathan</span></span>
-    <span class="mask-line"><span data-line style="--i:1">Augusto</span></span>
-  </h1>
-
-  <figure class="hero-media" data-open>
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-      poster={asset('media/tinta.jpg')}
-      width="478"
-      height="850"
-      aria-label="Gota de tinta preta caindo no batoque, em câmera lenta"
-      data-autoplay
-    >
-      <source src={asset('media/tinta.webm')} type="video/webm" />
-      <source src={asset('media/tinta.mp4')} type="video/mp4" />
-    </video>
-  </figure>
-
-  <div class="hero-copy">
-    <p class="lead" data-load style="--d:420ms">
-      Tatuagem em preto e cinza, blackwork e coberturas. Sua ideia é o ponto de partida: o projeto nasce da
-      conversa, da anatomia e da intenção por trás dela.
+  <div class="hero-text">
+    <h1 class="hero-title">
+      <span class="mask-line"><span data-line style="--i:0">O detalhe que faz</span></span>
+      <span class="mask-line"><span data-line style="--i:1">a diferença no olhar.</span></span>
+    </h1>
+    <p class="lead hero-lead" data-load style="--d:420ms">
+      Nathan Augusto é tatuador de preto e cinza, realismo animal e coberturas. Cada projeto nasce da conversa, da
+      anatomia e da intenção por trás da ideia.
     </p>
     <div class="hero-actions" data-load style="--d:500ms">
-      <a class="button" href="#orcamento" data-magnetic>Solicitar orçamento</a>
-      <a class="link" href="#processo">Conheça meu processo</a>
+      <a class="button" href="#jornadas" data-magnetic>Ver casos reais</a>
+      <a class="link" href="#orcamento">Solicitar orçamento</a>
     </div>
+  </div>
+
+  <div class="hero-media" data-open>
+    <Picture
+      src={nathan}
+      formats={['avif', 'webp']}
+      widths={[480, 720]}
+      sizes="(max-width: 820px) 100vw, 62vw"
+      alt="Nathan Augusto de perfil, concentrado, no estúdio"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-nathan"
+    />
+    <div class="hero-tiger" style={`clip-path: ${tigerClip}`}>
+      <Picture
+        src={tigre}
+        formats={['avif', 'webp']}
+        widths={[296]}
+        sizes="(max-width: 820px) 60vw, 30vw"
+        alt="Detalhe de uma tatuagem realista de tigre feita pelo Nathan"
+        loading="eager"
+      />
+    </div>
+    <svg class="hero-tear" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <polygon points={strip}></polygon>
+    </svg>
   </div>
 </header>
 
-<a class="button float-cta" href="#orcamento" data-float-cta>
-  Solicitar orçamento
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.5" /></svg>
-</a>
+<!-- Celular: barra inferior com o menu e o orçamento ao alcance do polegar. -->
+<div class="float-bar" data-float-cta>
+  <button type="button" class="float-menu" data-menu-open aria-controls="menu-celular" aria-expanded="false">Menu</button>
+  <a class="button float-cta" href="#orcamento">
+    Solicitar orçamento
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.5" /></svg>
+  </a>
+</div>
+
+<div class="menu-sheet on-ink" id="menu-celular" data-menu hidden>
+  <button type="button" class="menu-close link" data-menu-close>Fechar</button>
+  <nav aria-label="Seções">
+    <ul role="list">
+      {nav.map((item) => <li><a href={item.href} data-menu-link>{item.label}</a></li>)}
+      <li><a href="#orcamento" data-menu-link>Orçamento</a></li>
+    </ul>
+  </nav>
+  <ThemeToggle />
+</div>
 
 <div class="site-bar" data-site-bar>
   <a class="site-bar-mark" href="#inicio">Nathan Augusto</a>
   <nav class="site-bar-links" aria-label="Seções">
     {nav.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
   </nav>
-  <a class="button site-bar-cta" href="#orcamento"><span class="only-wide">Solicitar orçamento</span><span class="only-narrow">Orçamento</span></a>
+  <ThemeToggle />
+  <a class="button site-bar-cta" href="#orcamento">Solicitar orçamento</a>
 </div>
 
 <style>
-  /* O nome é um bloco só, com o texto logo abaixo; o vídeo da tinta ocupa a coluna da direita inteira. */
   .hero {
-    --media: calc(5 * var(--col) + 4 * var(--gutter) + var(--margin));
+    --media: calc(7 * var(--col) + 6 * var(--gutter) + var(--margin));
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--media);
-    grid-template-rows: auto 1fr auto auto 1fr;
-    grid-template-areas:
-      'nav  media'
-      '.    media'
-      'name media'
-      'copy media'
-      '.    media';
+    grid-template-rows: auto 1fr;
     column-gap: var(--gutter);
     height: 100svh;
     min-height: 640px;
     max-height: 1100px;
-    background: var(--color-paper);
+    background: var(--bg);
     overflow: clip;
     isolation: isolate;
   }
 
-  .hero-nav {
-    grid-area: nav;
+  .hero-top {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    position: relative;
+    z-index: 3;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 28px;
-    padding: 24px var(--margin) 0;
-    font-size: var(--step-lead);
-    font-weight: 600;
+    align-items: center;
+    gap: 28px;
+    padding: 18px var(--margin);
+    background: var(--bg);
   }
+  .hero-mark { font-weight: 800; font-stretch: 150%; text-transform: uppercase; text-decoration: none; font-size: var(--step-body); white-space: nowrap; }
+  .hero-nav { display: flex; flex-wrap: wrap; gap: 6px 24px; margin-left: auto; font-size: var(--step-body); font-weight: 600; }
 
-  .hero-name {
-    grid-area: name;
-    margin: 0;
-    padding-left: var(--margin);
-    font-size: clamp(56px, 7.4vw, 128px);
-  }
-
-  .hero-copy {
-    grid-area: copy;
+  .hero-text {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
     display: grid;
     gap: 28px;
-    max-width: 34ch;
-    margin-top: clamp(28px, 3vw, 48px);
-    padding-left: var(--margin);
+    padding: 0 0 48px var(--margin);
   }
+  .hero-title {
+    font-size: clamp(2.5rem, 3.9vw, 4.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+  }
+  .hero-lead { max-width: 32ch; }
   .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
 
   .hero-media {
-    grid-area: media;
+    grid-column: 2;
+    grid-row: 2;
+    position: relative;
     margin: 0;
-    background: #0d0d0d;
     overflow: clip;
+    background: #0d0d0d;
   }
-  .hero-media video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+  .hero-media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .hero-media :global(.hero-nathan) { position: absolute; inset: 0; width: 62%; object-position: 50% 30%; }
+  .hero-tiger { position: absolute; inset: 0; }
+  .hero-tiger :global(picture) { position: absolute; inset: 0 0 0 38%; }
+  .hero-tiger :global(img) { object-position: 30% 40%; }
+  .hero-tear { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--color-paper); }
 
-  .site-bar {
-    display: none;
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero-tiger { animation: tear-in 1100ms var(--ease-expo) 250ms both; }
+    :global(.js) .hero-tear { animation: tear-in 1100ms var(--ease-expo) 200ms both; }
   }
+  @keyframes tear-in { from { transform: translateX(8%); } to { transform: none; } }
+
+  /* Barra fixa do desktop: aparece ao rolar para cima depois da abertura. */
+  .site-bar { display: none; }
   :global(.js) .site-bar {
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 50;
     display: flex;
     align-items: center;
-    gap: 28px;
-    padding: 10px var(--margin);
-    background: var(--color-paper);
-    color: var(--color-ink);
+    gap: 24px;
+    padding: 8px var(--margin);
+    background: var(--bg);
+    color: var(--fg);
     transform: translateY(-110%);
     transition: transform var(--t-ui) var(--ease-out);
   }
   :global(.js) .site-bar.is-on,
   :global(.js) .site-bar:focus-within { transform: none; }
-  @keyframes nudge { 50% { transform: translate(4px, -4px); } }
-
   .site-bar-mark { font-weight: 800; font-stretch: 150%; text-transform: uppercase; text-decoration: none; font-size: var(--step-small); white-space: nowrap; }
   .site-bar-links { display: flex; gap: 22px; margin-left: auto; font-size: var(--step-small); }
   .site-bar-cta { min-height: 40px; font-size: var(--step-small); white-space: nowrap; }
-  .only-narrow { display: none; }
 
-  .float-cta { display: none; }
+  .float-bar { display: none; }
+  .menu-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: grid;
+    align-content: center;
+    gap: 40px;
+    padding: 72px var(--margin) 40px;
+  }
+  .menu-sheet[hidden] { display: none; }
+  .menu-sheet ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .menu-sheet a { font-size: clamp(2rem, 9vw, 3rem); font-weight: 800; text-decoration: none; line-height: 1.2; }
+  .menu-close { position: absolute; top: 20px; right: var(--margin); background: none; border: 0; color: inherit; font: inherit; font-weight: 600; padding: 10px; cursor: pointer; }
+
+  @keyframes nudge { 50% { transform: translate(4px, -4px); } }
 
   @media (max-width: 820px) {
-    /* No celular o botão flutuante substitui a barra do topo. */
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      height: auto;
+      min-height: 0;
+      max-height: none;
+      padding-bottom: 48px;
+    }
+    .hero-top { padding: 14px var(--margin); }
+    .hero-nav { display: none; }
+    :global(.hero-theme) { margin-left: auto; padding: 0 12px; }
+    /* No topo do celular fica só o ícone; o nome continua para leitores de tela. */
+    .hero-top :global(.theme-label) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .hero-media { grid-column: 1; grid-row: 2; height: 48svh; }
+    .hero-text { grid-column: 1; grid-row: 3; padding: 28px var(--margin) 0; gap: 20px; }
+    .hero-title { font-size: clamp(2rem, 8.6vw, 2.75rem); }
+
     :global(.js) .site-bar { display: none; }
-    :global(.js) .float-cta {
+    :global(.js) .float-bar {
       position: fixed;
       left: var(--margin);
       right: var(--margin);
       bottom: calc(14px + env(safe-area-inset-bottom));
       z-index: 50;
       display: flex;
-      justify-content: space-between;
-      min-height: 58px;
-      font-size: 1.125rem;
+      gap: 8px;
       transform: translateY(160%);
       transition: transform 520ms var(--ease-expo);
     }
-    :global(.js) .float-cta.is-on { transform: none; }
+    :global(.js) .float-bar.is-on { transform: none; }
+    .float-menu {
+      min-height: 58px;
+      padding: 0 18px;
+      border: 0;
+      background: var(--color-ink);
+      color: var(--color-paper);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .float-cta { flex: 1; justify-content: space-between; min-height: 58px; font-size: 1.0625rem; }
     .float-cta svg { width: 24px; height: 24px; }
     @media (prefers-reduced-motion: no-preference) {
       /* Ao aparecer, a seta dá dois toques para indicar que leva a algum lugar. */
-      :global(.js) .float-cta.is-on svg { animation: nudge 700ms var(--ease-out) 520ms 2; }
+      :global(.js) .float-bar.is-on .float-cta svg { animation: nudge 700ms var(--ease-out) 520ms 2; }
     }
-
-    .hero {
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto auto auto;
-      grid-template-areas: 'name' 'media' 'copy';
-      height: auto;
-      min-height: 0;
-      max-height: none;
-      padding-bottom: 48px;
-    }
-    .hero-name { font-size: 13vw; padding: 20px var(--margin) 20px; }
-    .hero-media { height: 56svh; }
-    .hero-copy { max-width: none; margin-top: 24px; padding-right: var(--margin); gap: 20px; }
-    .hero-copy .lead { font-size: 1.1875rem; }
-    .hero-nav { display: none; }
-    .site-bar-links { display: none; }
-    .site-bar-cta { margin-left: auto; }
-    .only-wide { display: none; }
-    .only-narrow { display: inline; }
   }
 </style>

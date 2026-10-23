@@ -7,8 +7,9 @@ import fontUrl from '../assets/fonts/tiktok-sans.woff2?url';
 interface Props {
   title: string;
   description: string;
+  noindex?: boolean;
 }
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 const jsonLd = {
@@ -30,7 +31,8 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#000000" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#ecece7" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -38,8 +40,16 @@ const jsonLd = {
     <meta property="og:image" content={new URL(asset('media/tinta.jpg'), Astro.site)} />
     <link rel="icon" href={asset('favicon.png')} type="image/png" />
     <link rel="preload" href={fontUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={asset('media/tinta.jpg')} as="image" fetchpriority="high" />
-    <script is:inline>document.documentElement.classList.add('js')</script>
+    <!-- Tema claro por padrão; o escuro só entra se o visitante escolheu antes. Roda antes da pintura. -->
+    <script is:inline>
+      (() => {
+        const d = document.documentElement;
+        d.classList.add('js');
+        try {
+          if (localStorage.getItem('tema') === 'escuro') d.dataset.theme = 'dark';
+        } catch {}
+      })();
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>

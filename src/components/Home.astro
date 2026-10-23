@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Specialties from './Specialties.astro';
+import Journeys from './Journeys.astro';
+import Work from './Work.astro';
+import About from './About.astro';
+import Planning from './Planning.astro';
+import Process from './Process.astro';
+import Quote from './Quote.astro';
+import Faq from './Faq.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  preview?: boolean;
+}
+const { preview = false } = Astro.props;
+---
+
+<!-- Ordem do argumento: quem é, o que faz, casos reais, trabalhos, quem tatua, como decide, processo e só então as perguntas. -->
+<Base
+  title="Nathan Augusto, tatuador | Preto e cinza, realismo animal e coberturas"
+  description="Tatuagem em preto e cinza, realismo animal e coberturas. Veja casos reais do zero e de cobertura, entenda o planejamento e monte seu pedido de orçamento direto para o WhatsApp."
+  noindex={preview}
+>
+  {
+    preview && (
+      <p class="preview-banner" role="status">
+        Prévia: mostra os projetos em rascunho e marca o que falta mandar. Esta página não aparece no Google.
+      </p>
+    )
+  }
+  <Hero />
+  <main>
+    <Specialties />
+    <Journeys preview={preview} />
+    <Work />
+    <About />
+    <Planning />
+    <Process />
+    <Quote />
+    <Faq />
+  </main>
+  <Footer />
+  <script>
+    import '../scripts/main';
+  </script>
+</Base>
+
+<style>
+  .preview-banner {
+    position: relative;
+    z-index: 80;
+    padding: 12px var(--margin);
+    background: var(--color-stencil);
+    color: #fff;
+    font-weight: 700;
+  }
+</style>

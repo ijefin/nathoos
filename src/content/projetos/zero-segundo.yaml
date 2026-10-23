@@ -1,0 +1,17 @@
+# Espaço para o próximo projeto do zero. Quantidade de projetos ainda pendente.
+titulo: Próximo projeto do zero
+jornada: zero
+local: A definir
+status: rascunho
+ordem: 2
+etapas:
+  - chave: ideia
+    pendente: Referências e a conversa inicial.
+  - chave: planejamento
+    pendente: Direção de estilo e simulação, se houve.
+  - chave: desenvolvimento
+    pendente: Fotos ou vídeo do desenho sendo criado.
+  - chave: sessao
+    pendente: Fotos ou vídeo da sessão.
+  - chave: resultado
+    pendente: Foto do resultado, de preferência também cicatrizado.

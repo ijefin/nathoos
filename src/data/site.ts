@@ -166,6 +166,10 @@ export const faq = [
     a: 'Começam com avaliação presencial. Vejo a tatuagem antiga, a cicatrização e a pele antes de propor o projeto. O preto e cinza e o freehand ajudam a esconder o que você não quer mais ver.',
   },
   {
+    q: 'A simulação já é o desenho final?',
+    a: 'Não. A simulação mostra posição e escala sobre a foto do seu corpo, para você decidir com segurança. O desenho completo é desenvolvido depois que você decide seguir com o projeto.',
+  },
+  {
     q: 'Quantas sessões serão necessárias?',
     a: 'Depende do tamanho, da região e do nível de detalhe. A estimativa vem junto com o orçamento e é revista se o projeto mudar.',
   },

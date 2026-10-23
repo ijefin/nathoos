@@ -1,6 +1,8 @@
 # Nathan Augusto Tattoo: site
 
-Portfólio de uma página: hero → especialidades → processo → trabalhos → orçamento → sobre → dúvidas → contato.
+Portfólio de uma página (v2): abertura → o que eu faço → casos reais → trabalhos → quem tatua → antes de decidir →
+processo → orçamento progressivo → dúvidas → contato. Tema claro por padrão, escuro por escolha.
+Plano e auditoria da v2 em `docs/v2-plano.md` (inclui o planejamento da anamnese por QR code).
 Segue o roteiro em `Roteiro_Site_Portfolio_Nathan_Augusto_Tattoo.pdf` (etapa 1: site público).
 
 ## Rodar
@@ -22,6 +24,17 @@ Lê o material bruto em `_raw/` e escreve em `src/assets/media/` e `public/media
   Uma vez só: Settings → Pages → Source: **GitHub Actions**.
 - **VPS ou domínio próprio:** `SITE_URL=https://seu-dominio npm run build` e sirva a pasta `dist/` como
   arquivos estáticos (nginx/caddy). Sem `BASE_PATH`, o site assume a raiz do domínio.
+
+## Casos reais (jornadas)
+
+Cada projeto é um arquivo em `src/content/projetos/*.yaml`, validado no build:
+
+- `jornada: zero` (ideia → planejamento → desenvolvimento → sessão → resultado) ou `cobertura`
+  (tatuagem antiga → planejamento → criação → sessão → cicatrizado → feedback, com `perfil: feminino | masculino`).
+- Cada etapa leva `midia` (`imagem:` caminho relativo ou `video:` nome em `public/media`) ou `pendente:` com o que falta.
+- `status: rascunho` fica fora do site público e aparece em **`/previa/`**, com o que falta marcado em cada etapa.
+  Troque para `publicado` quando o material estiver completo e autorizado.
+- `feedback` só aparece com `autorizado: true`.
 
 ## Antes de publicar
 

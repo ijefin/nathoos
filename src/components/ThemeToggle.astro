@@ -1,0 +1,43 @@
+---
+/** Alterna tema claro (padrão) e escuro. O estado vem de `data-theme` no <html>; main.ts sincroniza todos. */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<button type="button" class:list={['theme-toggle', className]} data-theme-toggle aria-pressed="false">
+  <svg class="theme-icon theme-icon--dark" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="currentColor"></path>
+  </svg>
+  <svg class="theme-icon theme-icon--light" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5" fill="currentColor"></circle>
+    <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" fill="none"></path>
+  </svg>
+  <span class="theme-label" data-theme-label>Tema escuro</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 2px solid currentColor;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: var(--step-small);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--t-hover) ease, color var(--t-hover) ease;
+  }
+  .theme-icon { width: 18px; height: 18px; }
+  .theme-icon--light { display: none; }
+  :global([data-theme='dark']) .theme-icon--light { display: block; }
+  :global([data-theme='dark']) .theme-icon--dark { display: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover { background: var(--fg); color: var(--bg); }
+  }
+</style>

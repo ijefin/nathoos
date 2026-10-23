@@ -1,0 +1,21 @@
+# Projeto real de cobertura (masculino). Tudo pendente: o Nathan precisa mandar o material.
+# Publicar só com autorização do cliente para o antes e depois (status: publicado).
+titulo: Cobertura (masculino)
+jornada: cobertura
+perfil: masculino
+local: A definir
+status: rascunho
+ordem: 2
+etapas:
+  - chave: antiga
+    pendente: Foto da tatuagem antiga, com boa luz, antes de qualquer marcação.
+  - chave: planejamento
+    pendente: O que foi avaliado (cicatrização, tom, contraste) e a direção proposta.
+  - chave: criacao
+    pendente: Desenho ou simulação sobre a foto da tatuagem antiga.
+  - chave: sessao
+    pendente: Fotos ou vídeo da sessão.
+  - chave: cicatrizado
+    pendente: Foto do resultado já cicatrizado.
+  - chave: feedback
+    pendente: Depoimento do cliente, com autorização escrita para publicar.

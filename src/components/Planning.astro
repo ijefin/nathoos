@@ -1,0 +1,81 @@
+---
+import { Picture } from 'astro:assets';
+import TornEdge from './TornEdge.astro';
+import stencil from '../assets/media/planning/stencil.jpg';
+---
+
+<section class="planning grain torn" id="planejamento" aria-labelledby="planejamento-titulo">
+  <TornEdge seed={33} />
+  <div class="frame grid-12 planning-grid">
+    <h2 id="planejamento-titulo" class="head planning-title" data-split>Antes de decidir</h2>
+    <p class="lead planning-lead">Você enxerga o caminho do projeto antes de fechar qualquer coisa.</p>
+
+    <ol class="planning-list" role="list">
+      <li>
+        <h3 class="planning-item">Direção de estilo</h3>
+        <p>
+          A partir das suas referências e da região do corpo, eu indico o caminho: preto e cinza, blackwork ou realismo,
+          escala, composição e o que funciona na sua pele.
+        </p>
+      </li>
+      <li>
+        <h3 class="planning-item">Simulação visual, quando faz sentido</h3>
+        <p>
+          Em projetos que pedem, mostro uma simulação sobre a foto do local para você ver posição e tamanho no seu corpo.
+        </p>
+      </li>
+    </ol>
+
+    <aside class="planning-note" aria-label="O que a simulação é e o que não é">
+      <p>
+        A simulação é uma prévia de posição e escala, não o desenho final. O projeto completo é desenvolvido depois que
+        você decide seguir.
+      </p>
+      <a class="button" href="#orcamento">Começar meu orçamento</a>
+    </aside>
+
+    <figure class="planning-media">
+      <Picture
+        src={stencil}
+        formats={['avif', 'webp']}
+        widths={[480, 720]}
+        sizes="(max-width: 820px) 100vw, 34vw"
+        alt="Stencil roxo posicionado no antebraço antes da sessão"
+        loading="lazy"
+      />
+      <figcaption>Stencil posicionado no antebraço, conferido com o cliente antes de tatuar.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .planning { background: var(--bg); color: var(--fg); padding-block: clamp(96px, 10vw, 180px); }
+  .planning > :global(.torn-edge) { color: var(--bg); }
+  .planning-grid { row-gap: 32px; align-items: start; }
+  .planning-title { grid-column: 1 / 8; }
+  .planning-lead { grid-column: 1 / 7; max-width: 32ch; }
+  .planning-list { grid-column: 1 / 7; margin: 24px 0 0; padding: 0; list-style: none; display: grid; gap: 36px; }
+  .planning-item { font-size: var(--step-lead); font-weight: 800; margin-bottom: 8px; }
+  .planning-list p { max-width: 44ch; }
+  .planning-note {
+    grid-column: 1 / 7;
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+    padding: 28px;
+    background: var(--bg-2);
+    border-left: 6px solid var(--line);
+  }
+  .planning-note p { max-width: 46ch; font-weight: 600; }
+  .planning-media { grid-column: 8 / 13; grid-row: 1 / 6; margin: 0; }
+  .planning-media :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .planning-media figcaption { margin-top: 12px; color: var(--muted); font-size: var(--step-small); }
+
+  @media (max-width: 820px) {
+    .planning-title,
+    .planning-lead,
+    .planning-list,
+    .planning-note,
+    .planning-media { grid-column: 1 / -1; grid-row: auto; }
+  }
+</style>

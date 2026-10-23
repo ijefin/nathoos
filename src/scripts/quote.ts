@@ -82,6 +82,41 @@ export function initQuote() {
     compose();
   });
   form.addEventListener('input', compose);
+
+  // ---------- Perguntas progressivas: uma por vez, com voltar e continuar ----------
+  const steps = [...form.querySelectorAll<HTMLElement>('[data-q]')];
+  const nav = form.querySelector<HTMLElement>('[data-q-nav]');
+  const back = form.querySelector<HTMLButtonElement>('[data-q-back]');
+  const next = form.querySelector<HTMLButtonElement>('[data-q-next]');
+  const count = form.querySelector<HTMLElement>('[data-q-count]');
+  let at = 0;
+  const show = (i: number, focus = true) => {
+    at = Math.max(0, Math.min(steps.length - 1, i));
+    steps.forEach((el, k) => el.classList.toggle('is-current', k === at));
+    if (count) count.textContent = `${at + 1} de ${steps.length}`;
+    if (back) back.disabled = at === 0;
+    if (next) next.hidden = at === steps.length - 1;
+    if (focus) steps[at].querySelector<HTMLElement>('input:checked, input, textarea')?.focus({ preventScroll: true });
+  };
+  if (steps.length && nav && back && next) {
+    nav.hidden = false;
+    back.addEventListener('click', () => show(at - 1));
+    next.addEventListener('click', () => show(at + 1));
+    // Clique ou toque numa opção já avança; pelo teclado (setas) não, para não pular perguntas.
+    form.addEventListener('click', (e) => {
+      const input = (e.target as HTMLElement).closest('.choice')?.querySelector('input[type="radio"]');
+      if (input && (e as MouseEvent).detail > 0 && at < steps.length - 1) setTimeout(() => show(at + 1), 260);
+    });
+    form.addEventListener('keydown', (e) => {
+      const t = e.target as HTMLElement;
+      if (e.key === 'Enter' && t.matches('input[type="text"], input[type="range"]')) {
+        e.preventDefault();
+        if (at < steps.length - 1) show(at + 1);
+        else sends[0]?.focus();
+      }
+    });
+    show(0, false);
+  }
   form.addEventListener('submit', (e) => e.preventDefault());
 
   compose();

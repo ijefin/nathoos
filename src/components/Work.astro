@@ -112,8 +112,8 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
 </section>
 
 <style>
-  .work { --frame: min(42vw, 68svh); padding-block: clamp(96px, 10vw, 180px) clamp(96px, 10vw, 180px); }
-  .work > :global(.torn-edge) { color: var(--color-ink); }
+  .work { --frame: min(42vw, 68svh); padding-block: clamp(96px, 10vw, 180px) clamp(72px, 6vw, 120px); }
+  .work > :global(.torn-edge) { color: var(--bg); }
 
   .work-head {
     display: grid;
@@ -130,13 +130,13 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
     font-size: var(--step-body);
     min-height: 44px;
     padding: 0 16px;
-    color: var(--color-paper);
-    background: var(--color-ink-2);
+    color: var(--fg);
+    background: var(--bg-2);
     border: 0;
     cursor: pointer;
     transition: background-color var(--t-hover) ease, color var(--t-hover) ease;
   }
-  .work-filter[aria-pressed='true'] { background: var(--color-paper); color: var(--color-ink); }
+  .work-filter[aria-pressed='true'] { background: var(--fg); color: var(--bg); }
   @media (hover: hover) and (pointer: fine) {
     .work-filter[aria-pressed='false']:hover { background: #2c2c2c; }
   }
@@ -152,7 +152,7 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
     grid-column: 1 / 7;
     grid-row: 1;
     margin: 0;
-    padding: calc(50svh - var(--frame) / 2) 0 calc(50svh - 0.5em);
+    padding: calc(50svh - var(--frame) / 2) 0 18svh;
     list-style: none;
   }
   .work-name {
@@ -164,7 +164,7 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
     line-height: 0.95;
     text-align: left;
     text-transform: uppercase;
-    color: var(--color-paper);
+    color: var(--fg);
     opacity: 0.45;
     background: none;
     border: 0;
@@ -176,12 +176,12 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
     text-decoration-color: transparent;
     transition: opacity var(--t-ui) ease, color var(--t-hover) ease, text-decoration-color var(--t-hover) ease;
   }
-  .work-item.is-current .work-name { opacity: 1; text-decoration-color: var(--color-stencil-light); }
+  .work-item.is-current .work-name { opacity: 1; text-decoration-color: var(--line); }
   @media (hover: hover) and (pointer: fine) {
-    .work-name:hover { opacity: 1; color: var(--color-stencil-light); text-decoration-color: currentColor; }
+    .work-name:hover { opacity: 1; color: var(--line); text-decoration-color: currentColor; }
   }
   .work-inline { display: none; }
-  .work-empty { max-width: 34ch; color: var(--color-paper); }
+  .work-empty { max-width: 34ch; color: var(--fg); }
 
   .work-hold {
     grid-column: 7 / 13;
@@ -200,7 +200,7 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
     padding: 0;
     border: 0;
     overflow: clip;
-    background: var(--color-ink-2);
+    background: var(--bg-2);
     cursor: zoom-in;
   }
   .work-frame :global(picture),
@@ -211,21 +211,21 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
   .work-frame.has-gl :global(.work-shot) { visibility: hidden; }
 
   .work-caption { width: var(--frame); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .work-caption p { color: var(--color-paper); }
+  .work-caption p { color: var(--fg); }
   .work-detail {
     font: inherit;
     font-weight: 700;
     min-height: 44px;
     padding: 0 18px;
     border: 0;
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--fg);
+    color: var(--bg);
     cursor: pointer;
     transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
   }
   .work-detail:active { transform: scale(0.97); }
   @media (hover: hover) and (pointer: fine) {
-    .work-detail:hover { background: var(--color-stencil-light); }
+    .work-detail:hover { background: var(--line); }
   }
 
   .lightbox {
@@ -270,7 +270,7 @@ const large = await Promise.all(works.map((w) => getImage({ src: w.image, format
       padding: 0;
       border: 0;
       background: none;
-      color: var(--color-paper);
+      color: var(--fg);
       text-align: left;
       font: inherit;
       cursor: pointer;

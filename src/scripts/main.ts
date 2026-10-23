@@ -60,6 +60,54 @@ if (floatCta && hero) {
   document.querySelectorAll('#orcamento, .send, footer').forEach((el) => io.observe(el));
 }
 
+// ---------- Tema: claro por padrão, escuro por escolha (guardado só no navegador do visitante) ----------
+const root = document.documentElement;
+const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+const syncTheme = () => {
+  const dark = root.dataset.theme === 'dark';
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((b) => {
+    b.setAttribute('aria-pressed', String(dark));
+    const label = b.querySelector('[data-theme-label]');
+    if (label) label.textContent = dark ? 'Tema claro' : 'Tema escuro';
+  });
+  themeColor?.setAttribute('content', dark ? '#121212' : '#ecece7');
+};
+document.querySelectorAll('[data-theme-toggle]').forEach((b) =>
+  b.addEventListener('click', () => {
+    const dark = root.dataset.theme !== 'dark';
+    if (dark) root.dataset.theme = 'dark';
+    else delete root.dataset.theme;
+    try {
+      localStorage.setItem('tema', dark ? 'escuro' : 'claro');
+    } catch {}
+    syncTheme();
+  }),
+);
+syncTheme();
+
+// ---------- Menu do celular: folha em tela cheia, fecha com Esc, link ou botão ----------
+const menu = document.querySelector<HTMLElement>('[data-menu]');
+const menuOpen = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+if (menu && menuOpen) {
+  const setMenu = (open: boolean) => {
+    menu.hidden = !open;
+    menuOpen.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) menu.querySelector<HTMLElement>('a')?.focus();
+    else menuOpen.focus();
+  };
+  menuOpen.addEventListener('click', () => setMenu(true));
+  menu.querySelector('[data-menu-close]')?.addEventListener('click', () => setMenu(false));
+  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => {
+    menu.hidden = true;
+    menuOpen.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) setMenu(false);
+  });
+}
+
 // ---------- Vídeos: tocam só quando visíveis, param com a aba escondida ----------
 const videos = document.querySelectorAll<HTMLVideoElement>('[data-inview-play], [data-autoplay]');
 const videoIO = new IntersectionObserver(
@@ -150,6 +198,15 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
     );
   });
 
+  // "O que eu faço": cada palavra sai do traço de stencil e enche de tinta ao passar pelo meio da tela.
+  document.querySelectorAll<HTMLElement>('[data-craft] .craft-ink').forEach((ink) => {
+    gsap.fromTo(
+      ink,
+      { clipPath: 'inset(0 100% 0 0)' },
+      { clipPath: 'inset(0 0% 0 0)', ease: 'none', scrollTrigger: { trigger: ink.parentElement, start: 'top 82%', end: 'top 48%', scrub: true } },
+    );
+  });
+
   // Assinatura: no último passo, o traço do stencil se enche de tinta.
   const ink = document.querySelector<HTMLElement>('.step-ink');
   const lastStep = ink?.closest('[data-step]');
@@ -191,6 +248,30 @@ document.querySelectorAll<HTMLElement>('.send-word, [data-fit]').forEach((el) =>
   fit();
   document.fonts?.ready.then(fit);
   new ResizeObserver(fit).observe(el.parentElement!);
+});
+
+// ---------- Jornadas: abas acessíveis (clique, setas, Home e End) ----------
+const tabs = [...document.querySelectorAll<HTMLButtonElement>('#jornadas [data-tab]')];
+const selectTab = (tab: HTMLButtonElement, focus = false) => {
+  tabs.forEach((t) => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+    const panel = document.getElementById(t.getAttribute('aria-controls')!);
+    if (panel) panel.hidden = !on;
+  });
+  if (focus) tab.focus();
+  ScrollTrigger.refresh();
+};
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectTab(t));
+  t.addEventListener('keydown', (e) => {
+    const k = e.key;
+    const to = k === 'ArrowRight' ? i + 1 : k === 'ArrowLeft' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? tabs.length - 1 : null;
+    if (to === null) return;
+    e.preventDefault();
+    selectTab(tabs[(to + tabs.length) % tabs.length], true);
+  });
 });
 
 // ---------- Interações ----------
